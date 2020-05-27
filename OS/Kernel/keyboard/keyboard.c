@@ -8,6 +8,6 @@ static char asccode[][2] = { {0,0}, {0,0}, {'1', '!'}, {'2', '@'}, {'3', '#'},{'
 
 void keyboard_handler(){
     unsigned char key = getKey();
-    if(key<58) writeChar(asccode[key][0],0,0,0);
+    if(key<58) writeChar(asccode[key][0],0,0,0.25f);
     
 }
