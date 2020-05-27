@@ -51,15 +51,16 @@ void setPixel(int x, int y, color c);
 char getBit(unsigned char index,int x, int y);
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
-
 void writeChar(uint8_t letter, unsigned int x, unsigned int y, unsigned int scale){
+    static current;
     color white = {255,255,255};
     color black = {0,0,0};
    for(int j = 0; j < letter_height;j++){
 			for(int i = 0; i < letter_width;i++){
-                setPixel(x+i,y+j,getBit(letter,i,j)?white:black);
+                setPixel(x+i+current,y+j+letter_height*(current/screen_info->width),getBit(letter,i,j)?white:black);
 	  		}
 	    }
+    current+=letter_width;
 }
 
 void setPixel(int x, int y, color c){
