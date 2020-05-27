@@ -1,4 +1,13 @@
 #include <stdint.h>
+#include "fonts.h"
+
+typedef struct color{
+    uint8_t blue;
+    uint8_t green;
+    uint8_t red;
+
+} color;
+
 
 struct vbe_mode_info_structure{
     uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -38,8 +47,35 @@ struct vbe_mode_info_structure{
     uint8_t reserved1[206];
 } __attribute__((packed));
 
+void setPixel(int x, int y, color c);
+char getBit(unsigned char index,int x, int y);
+
 struct vbe_mode_info_structure * screen_info = 0x5C00;
 
 void writeChar(uint8_t letter, unsigned int x, unsigned int y, unsigned int scale){
+    color white = {255,255,255};
+    color black = {0,0,0};
+   for(int j = 0; j < letter_height;j++){
+			for(int i = 0; i < letter_width;i++){
+                setPixel(x+i,y+j,getBit(letter,i,j)?white:black);
+	  		}
+	    }
+}
+
+void setPixel(int x, int y, color c){
+    char * framebuffer =screen_info->framebuffer;
+    int absolute=3*(x+y*screen_info->width);
+    char * pixel = framebuffer+absolute;
+    pixel[0]=c.blue;
+    pixel[1]=c.green;
+    pixel[2]=c.red;
     
 }
+
+char getBit(unsigned char index,int x, int y){
+  	int absolute = x + y * letter_bytes*8;
+  	int pos = absolute/8;
+  	int bit = absolute%8;
+  	return (bitmap[index-OFFSET][pos]>>(bit))&0x01;	
+ }
+

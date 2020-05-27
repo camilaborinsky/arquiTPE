@@ -36,7 +36,7 @@ void * getStackBase()
 void * initializeKernelBinary()
 {
 	char buffer[10];
-
+	/*
 	ncPrint("[x64BareBones]");
 	ncNewline();
 
@@ -46,21 +46,23 @@ void * initializeKernelBinary()
 
 	ncPrint("[Loading modules]");
 	ncNewline();
+	*/
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
 		sampleDataModuleAddress
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
+	/*
 	ncPrint("[Done]");
 	ncNewline();
 	ncNewline();
 
 	ncPrint("[Initializing kernel's binary]");
 	ncNewline();
-
+	*/
 	clearBSS(&bss, &endOfKernel - &bss);
-
+	/*
 	ncPrint("  text: 0x");
 	ncPrintHex((uint64_t)&text);
 	ncNewline();
@@ -77,11 +79,12 @@ void * initializeKernelBinary()
 	ncPrint("[Done]");
 	ncNewline();
 	ncNewline();
+	*/
 	return getStackBase();
 }
 
 int main()
-{	
+{	/*
 	ncPrint("[Kernel Main]");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");
@@ -100,7 +103,7 @@ int main()
 	ncNewline();
 
 	ncPrint("[Finished]");
-	ncClear();
+	ncClear();*/
 	load_idt();
 	while(1);
 	return 0;
