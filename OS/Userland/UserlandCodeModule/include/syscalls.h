@@ -1,0 +1,1 @@
+void sys_drawCharacter(int x, int y, int px, char letter);

@@ -1,18 +1,18 @@
 include Makefile.inc
 
-SAMPLE_DATA=0001-sampleDataModule.bin
+SAMPLE_DATA=0001-userlandDataModule.bin
 
-all: sampleCodeModule sampleDataModule
+all: userlandCodeModule userlandDataModule
 
-sampleCodeModule:
-	cd SampleCodeModule; make
+userlandCodeModule:
+	cd UserlandCodeModule; make
 
-sampleDataModule:
+userlandDataModule:
 	printf "This is sample data." >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
 
 clean:
-	cd SampleCodeModule; make clean
+	cd UserlandCodeModule; make clean
 	rm -rf *.bin
 
 
-.PHONY: sampleCodeModule all clean
+.PHONY: userlandCodeModule all clean

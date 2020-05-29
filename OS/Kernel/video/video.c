@@ -51,10 +51,21 @@ void setPixel(int x, int y, color c);
 char getBit(unsigned char index,int x, int y);
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
-void writeChar(uint8_t letter, unsigned int x, unsigned int y, double scale){
-    static current;
+
+void drawCharacter(int x, int y, int px, char letter){
     color white = {255,255,255};
     color black = {0,0,0};
+    double scale=1.0f*px/letter_width;
+    for(int j = 0; j < letter_height*scale;j++){
+        for(int i = 0; i < letter_width*scale;i++){
+            setPixel(i+x,j+y,getBit(letter,i/scale,j/scale)?white:black);
+        }
+	}   
+
+}
+
+/*void writeChar(uint8_t letter, unsigned int x, unsigned int y, double scale){
+    
     int lettersPerLine = (screen_info->width/(scale*letter_width));
     int x_offset = x+scale*letter_width*(current%lettersPerLine);
     int y_offset = y+scale*letter_height*(current/lettersPerLine);
@@ -64,7 +75,7 @@ void writeChar(uint8_t letter, unsigned int x, unsigned int y, double scale){
 	  		}
 	    }
     current++;
-}
+}*/
 
 void setPixel(int x, int y, color c){
     char * framebuffer =screen_info->framebuffer;
