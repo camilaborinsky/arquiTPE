@@ -1,4 +1,5 @@
 GLOBAL sys_drawCharacter
+GLOBAL sys_readErrors
 
 
 sys_drawCharacter: ;int x, int y, int px, char letter
@@ -37,6 +38,16 @@ sys_cpuTemp:  ;double * temp
 	mov rsp, rbp
 	pop rbp
 	ret
+
+sys_readErrors:  ;char* buffer
+	push rbp
+	mov rbp, rsp
+	mov rax, 4
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
+
 
 
 

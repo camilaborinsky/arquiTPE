@@ -65,7 +65,7 @@ void drawCharacter(int x, int y, int px, char letter){
 
 void drawBitmap(int x, int y, char * bitmap){
 
-    for(int j = 0 ; j < )
+    //for(int j = 0 ; j < )
 
 }
 
