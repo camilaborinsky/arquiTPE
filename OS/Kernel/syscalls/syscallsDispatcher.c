@@ -26,6 +26,7 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
             cpuTemp(registers[0]);
             break;
         case 4:
+            readErrors(registers[0],registers[1]);
             break;
     }
 

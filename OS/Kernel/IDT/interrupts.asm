@@ -75,10 +75,10 @@ SECTION .text
 %endmacro
 
 
-
+;potential error stack struct ==== rip,cs,flags,rsp,ss
 %macro exceptionHandler 1
 	pushState
-
+	mov rsi,rsp
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 
