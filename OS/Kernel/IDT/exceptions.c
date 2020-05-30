@@ -28,7 +28,6 @@ void exceptionDispatcher(int exception,uint64_t * args) {
 
 static void zero_division(registerArgs * args) {
 	// Handler para zero divisions
-	
 	errorStruct * error = buffer + (++errorIndex%ERROR_BUFFER_SIZE);
 	error -> errorCode = ZERO_EXCEPTION_ID;
 	error-> opcode = *((char *)args -> rip);
