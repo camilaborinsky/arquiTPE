@@ -104,6 +104,8 @@ int main()
 
 	ncPrint("[Finished]");
 	ncClear();*/
+	int a=0;
+	int b=10/a;
 	load_idt();
 	((EntryPoint)userlandCodeModuleAddress)();
 	while(1);

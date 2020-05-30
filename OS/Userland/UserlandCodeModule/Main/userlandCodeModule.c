@@ -1,13 +1,6 @@
 #include <syscalls.h>
 #include <stdint.h>
 
-typedef struct errorStruct{
-	char errorCode;
-	//char * errorMessage;
-	uint64_t opcode;
-	registerArgs registers;
-}errorStruct;
-
 typedef struct registerArgs{
 	uint64_t r15;
 	uint64_t r14;
@@ -31,16 +24,25 @@ typedef struct registerArgs{
 	uint64_t ss;
 }registerArgs;
 
+typedef struct errorStruct{
+	char errorCode;
+	//char * errorMessage;
+	uint64_t opcode;
+	registerArgs registers;
+}errorStruct;
 int main() {
 	// int scale=1;
 	// int offset=0;
 	// while(scale<43){
 	// 	sys_drawCharacter(offset+=scale,0,scale+=1,'a');
 	// }
+	sys_drawCharacter(0,0,41,'a');
 	int a = 0;
 	int b = 15/a;
 	errorStruct error;
+	sys_drawCharacter(0,0,41,'a');
 	sys_readErrors(&error);
+	sys_drawCharacter(0,0,41,'a');
 	sys_drawCharacter(0,0,41,error.errorCode + '0');
 	return 0;
 }
