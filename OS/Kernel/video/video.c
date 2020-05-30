@@ -61,6 +61,11 @@ void drawCharacter(int x, int y, int px, char letter){
             setPixel(i+x,j+y,getBit(letter,i/scale,j/scale)?white:black);
         }
 	}   
+}
+
+void drawBitmap(int x, int y, char * bitmap){
+
+    for(int j = 0 ; j < )
 
 }
 

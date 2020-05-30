@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 void keyboard_handler();
-int readKeyboard();
+void readKeyboard(char * buffer, int count);
 char getKey();
 char hasKey();
 char getPort64();

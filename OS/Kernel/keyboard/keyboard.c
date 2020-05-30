@@ -13,7 +13,7 @@ void keyboard_handler(){
     if(key<58)buffer[++i]= asccode[key][0];
     
 }
-int readKeyboard(){
+int readKeyboard(char * buffer, int count){
 	if(i<0) return i;
 	return buffer[i--];
 }

@@ -16,6 +16,7 @@ GLOBAL _irq05Handler
 GLOBAL _syscallsHandler
 
 GLOBAL _exception0Handler
+GLOBAL _exception6Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
