@@ -77,8 +77,6 @@ SECTION .text
 
 ;potential error stack struct ==== rip,cs,flags,rsp,ss
 %macro exceptionHandler 1
-	add rsp,16
-	iretq
 	pushState
 	mov rbp,rsp
 	mov rsi,rbp
