@@ -92,5 +92,5 @@ char getBit(unsigned char index,int x, int y){
   	int pos = absolute/8;
   	int bit = absolute%8;
   	return (bitmap[index-OFFSET][pos]>>(bit))&0x01;	
- }
+}
 
