@@ -163,6 +163,10 @@ _syscallsHandler:;rax id,
 _exception0Handler:
 	exceptionHandler 0
 
+;Invalid Opcode Exception
+_exception6Handler:
+	exceptionHandler 6
+
 haltcpu:
 	cli
 	hlt
