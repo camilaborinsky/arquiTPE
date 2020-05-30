@@ -1,13 +1,6 @@
 #include <stdint.h>
 #include "fonts.h"
-
-typedef struct color{
-    uint8_t blue;
-    uint8_t green;
-    uint8_t red;
-
-} color;
-
+#include "xPixMap.h"
 
 struct vbe_mode_info_structure{
     uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -47,14 +40,14 @@ struct vbe_mode_info_structure{
     uint8_t reserved1[206];
 } __attribute__((packed));
 
-void setPixel(int x, int y, color c);
+void setPixel(int x, int y, colorStruct c);
 char getBit(unsigned char index,int x, int y);
 
 struct vbe_mode_info_structure * screen_info = 0x5C00;
 
 void drawCharacter(int x, int y, int px, char letter){
-    color white = {255,255,255};
-    color black = {0,0,0};
+    colorStruct white = {255,255,255};
+    colorStruct black = {0,0,0};
     double scale=1.0f*px/letter_width;
     for(int j = 0; j < letter_height*scale;j++){
         for(int i = 0; i < letter_width*scale;i++){
@@ -63,9 +56,17 @@ void drawCharacter(int x, int y, int px, char letter){
 	}   
 }
 
-void drawBitmap(int x, int y, char * bitmap){
+void drawBitmap(int x, int y, char * pixmap[]){ // max 16 colors support
 
-    //for(int j = 0 ; j < )
+    infoPixelMap pixelMap;
+    loadPixelMap(&pixelMap,pixmap);
+
+
+    for(int j=0; j<pixelMap.values.height;j++){
+        for(int i=0;i<pixelMap.values.width;i++){
+            setPixel(i+x,j+y,getColor(i,j,&pixelMap));
+        }
+    }
 
 }
 
@@ -82,7 +83,7 @@ void drawBitmap(int x, int y, char * bitmap){
     current++;
 }*/
 
-void setPixel(int x, int y, color c){
+void setPixel(int x, int y, colorStruct c){
     char * framebuffer =screen_info->framebuffer;
     int absolute=3*(x+y*screen_info->width);
     char * pixel = framebuffer+absolute;
