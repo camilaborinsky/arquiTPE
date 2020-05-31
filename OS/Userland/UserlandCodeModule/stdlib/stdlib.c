@@ -1,6 +1,16 @@
 #include<stdint.h>
 #include<syscalls.h>
 
+int getChar(){
+    int character;
+    int count = 0;
+    while(count!=1){
+        sys_readKeyboard(&character,1,&count);
+        hlt();
+    }
+    return character;
+}
+
 int intToString(int num, char * buffer)
 {
     char stack[11];

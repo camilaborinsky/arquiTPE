@@ -2,6 +2,16 @@ GLOBAL sys_drawCharacter
 GLOBAL sys_readErrors
 GLOBAL sys_drawBitmap
 GLOBAL sys_readKeyboard
+GLOBAL sys_setHandler
+
+sys_readKeyboard:  ;char* buffer, int count,int * amount
+	push rbp
+	mov rbp, rsp
+	mov rax, 0
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
 
 
 sys_drawCharacter: ;int x, int y, int px, char letter
@@ -13,14 +23,6 @@ sys_drawCharacter: ;int x, int y, int px, char letter
     pop rbp
     ret
 
-sys_readKeyboard:  ;char* buffer, int count,int * amount
-	push rbp
-	mov rbp, rsp
-	mov rax, 0
-	int 80h
-	mov rsp, rbp
-	pop rbp
-	ret
 
 sys_drawBitmap:  ;int x, int y, char * bitmap
 	push rbp
@@ -49,6 +51,16 @@ sys_readErrors:  ;char* buffer
 	mov rsp, rbp
 	pop rbp
 	ret
+
+sys_setHandler: ; int exception, void * func
+	push rbp
+	mov rbp, rsp
+	mov rax, 5
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
+
 
 
 

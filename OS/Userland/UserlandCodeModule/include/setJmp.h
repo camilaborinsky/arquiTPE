@@ -17,8 +17,8 @@ typedef struct registerEnv{
     uint64_t rip;
 }registerEnv;
 
-void longJmp(registerEnv * env, int value);
-int setJmp(registerEnv * env);
+void longjmp(registerEnv * env, int value);
+int setjmp(registerEnv * env);
 
 
 

@@ -1,8 +1,8 @@
 EXTERN printNum
-GLOBAL setJmp
-GLOBAL longJmp
+GLOBAL setjmp
+GLOBAL longjmp
 
-setJmp:
+setjmp:
     pop rdx
     mov [rdi], r15
     add rdi, 8
@@ -29,7 +29,7 @@ setJmp:
     push rdx
     ret
 
-longJmp:
+longjmp:
     mov r15, [rdi]
     add rdi, 8
     mov r14, [rdi]

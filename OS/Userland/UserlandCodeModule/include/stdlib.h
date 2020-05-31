@@ -5,5 +5,5 @@
 
 
 void printNum(uint64_t num);
-
+int getChar();
 #endif
