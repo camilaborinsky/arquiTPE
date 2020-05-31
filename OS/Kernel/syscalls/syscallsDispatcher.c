@@ -29,6 +29,10 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
         case 4:
             readErrors((errorStruct *)registers[0]);
             break;
+        case 5:
+            setHandler(registers[0], (void *)registers[1]);
+            break;
+        
     }
 
 }

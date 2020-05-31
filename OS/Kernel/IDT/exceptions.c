@@ -11,6 +11,8 @@ static void invalid_opcode(registerArgs * args);
 static errorStruct buffer[ERROR_BUFFER_SIZE];
 static int errorIndex = -1;
 
+static signalStruct
+
 //exception es el codigo que le corresponde al error
 //args es una serie de parametros. args = {r15,...,r8,rsi,rdi,rbp,rdx,rcx,rbx,rax,rip,cs,flags,rsp,ss}
 void exceptionDispatcher(int exception,uint64_t * args) {
@@ -49,4 +51,10 @@ void readErrors(errorStruct * error){
 		return;
 	}
 	*error = buffer[errorIndex--];
+}
+
+void setHandler(int ex, void * handler){
+
+
+
 }
