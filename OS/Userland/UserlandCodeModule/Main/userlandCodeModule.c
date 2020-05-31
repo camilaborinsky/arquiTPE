@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <setJmp.h>
 
+
 typedef struct registerArgs{
 	uint64_t r15;
 	uint64_t r14;
@@ -40,7 +41,9 @@ typedef struct errorStruct{
 // 	longjmp(7);
 // }
 
-
+void inControllerTab0(int c);
+void inControllerTab1(int c);
+void runGenerico(char * in,char * out);
 /* XPM */
 //"width height numColors pixelDensity"
 static char * linea_xpm[] = {
@@ -1175,11 +1178,10 @@ static char * linea_xpm[] = {
 
 };
 
-void printString(char * string){
+void printString(char * string,int current){
     int width=1000;
     int px=12;
     int lettersPerLine = width/px; //cambiar a syscall getResolution
-    static int current;
     for(int i=0;string[i]!=0;i++){
          int x_offset = px*(current%lettersPerLine);
         int y_offset = (2*px)*(current/lettersPerLine);
@@ -1189,9 +1191,45 @@ void printString(char * string){
     
 }
 
+
+
+#define NUM_TABS 2
+typedef struct screen{
+	int xi,yi,xf,yf;
+}screen;
+
+typedef struct tabStruct{
+	void  (* run)(char *, char *);
+	void (* inController) (int);
+	char in[512];
+	char out[512];
+	int inIndex;
+	screen currentScreen;
+	int pointer;
+}tabStruct;
+
+
+tabStruct tabs[2];
+
+unsigned char focus = 0;
+
+// void switchFocus(){
+// 	int r;
+// 	if(r =setJmp(&tabs[focus]) == 0 ){
+// 		focus = (focus+1)%NUM_TABS;
+// 		longJmp(&tabs[focus],1);
+// 	}
+// }
+
+
+
+
+tabStruct tab0 = {runGenerico,inControllerTab0,{0},{0},0,{0,0,500,1000},0};
+tabStruct tab1 = {runGenerico,inControllerTab1,{0},{0},0,{500,0,1000,1000},0};
+
 int main() {
 
-	int focus=0;
+
 	// registerEnv env;
 	// int i = setJmp(&env);
 	// printNum(i++);
@@ -1210,9 +1248,50 @@ int main() {
 	// }
 
 	//NORMAL RUN
-	printString(linea_xpm[0]);
+	tabs[0] = tab0;
+	tabs[1] = tab1;
 	sys_drawBitmap(500,0,linea_xpm);
-
+	int c =0;
+	char buffer[500]; 
+	int amount = 1;
+	int a = 0;
+	while(1){
+		sys_readKeyboard(buffer,1,&amount);
+		while(buffer[a] !='/n'){
+			if(buffer[a] == '/t'){
+				focus = (focus+1)%NUM_TABS;
+			}else{
+				//tabs[focus].in[tabs[focus].inIndex++] = c;
+				tabs[focus].inController(buffer[a]);
+			}
+			a++;
+		}
+	}
+	//agus> 1 + 3 /n
 
 	return 0;
 }
+const screen screen0 = {0,0,500,1000};
+screen screen1 = {500,0,1000,1000};
+
+
+void runGenerico(char * in,char * out){
+	return;
+}
+
+
+void inControllerTab1(int c){
+	char str[2];
+	str[0] = c;
+	str[1] = 0; 
+	printString(str,tabs[1].pointer);
+
+}
+void inControllerTab0(int c){
+	char str[2];
+	str[0] = c;
+	str[1] = 0; 
+	printString(str,tabs[0].pointer);
+	
+}
+

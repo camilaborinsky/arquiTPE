@@ -13,7 +13,11 @@ void keyboard_handler(){
     if(key<58)buffer[++i]= asccode[key][0];
     
 }
-void readKeyboard(char * buffer, int count){
-	if(i<0) return i;
-	return buffer[i--];
+void readKeyboard(char * buf, int count, int * amount){
+	int index;
+	for(index = 0; index<i && index<count;index++){
+		buf[index] = buf[index];
+	}
+	i=0;
+	*amount = index;
 }

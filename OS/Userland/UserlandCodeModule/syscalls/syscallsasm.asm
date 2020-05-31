@@ -1,6 +1,7 @@
 GLOBAL sys_drawCharacter
 GLOBAL sys_readErrors
 GLOBAL sys_drawBitmap
+GLOBAL sys_readKeyboard
 
 
 sys_drawCharacter: ;int x, int y, int px, char letter
@@ -12,7 +13,7 @@ sys_drawCharacter: ;int x, int y, int px, char letter
     pop rbp
     ret
 
-sys_readKeyboard:  ;char* buffer, int count
+sys_readKeyboard:  ;char* buffer, int count,int * amount
 	push rbp
 	mov rbp, rsp
 	mov rax, 0
