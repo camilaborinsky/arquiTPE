@@ -1,8 +1,9 @@
-
+EXTERN printNum
 GLOBAL setJmp
 GLOBAL longJmp
 
 setJmp:
+    pop rdx
     mov [rdi], r15
     add rdi, 8
     mov [rdi], r14
@@ -12,6 +13,8 @@ setJmp:
     mov [rdi], r12
     add rdi, 8
     mov [rdi], rbp
+    add rdi, 8
+    mov [rdi], rdx
     add rdi, 8
     mov [rdi], rbx
     add rdi, 8
@@ -23,7 +26,7 @@ setJmp:
     add rdi, 8
     mov rax, 0
     mov qword [rdi], $
-
+    push rdx
     ret
 
 longJmp:
@@ -36,6 +39,8 @@ longJmp:
     mov r12, [rdi]
     add rdi, 8
     mov rbp, [rdi]
+    add rdi, 8
+    mov rdx, [rdi]
     add rdi, 8
     mov rbx, [rdi]
     add rdi, 8

@@ -45,9 +45,8 @@ int main() {
 	int focus=0;
 	registerEnv env;
 	int i = setJmp(&env);
-
-	sys_drawCharacter(0,0, 41, i%10+'0');
-	longJmp(&env, 2);
+	printNum(i++);
+	longJmp(&env, i);
 	// setHandler(0,divisionByZeroHandler());
 	// setHandler(6,invalidOpcodeHandler());
 	// int entry=setjmp()-1;
