@@ -6,7 +6,7 @@ int intToString(int num, char * buffer)
     char stack[11];
     int c = 0;
     int i=0;
-    if(num==0) stack[i++]=0;
+    if(num==0) stack[i++]='0';
     while(num!=0){
         stack[i]=num%10+'0';
         num = num/10;

@@ -14,8 +14,8 @@ typedef struct colorStruct{
 
 //https://es.wikipedia.org/wiki/X_PixMap#XPM
 typedef struct infoValues{
-    int width;
-    int height;
+    unsigned int width;
+    unsigned int height;
     int colors;
     int charsPerPix; // siempre 1 creo DESCOMENTAR
 }infoValues;
@@ -34,7 +34,7 @@ typedef struct infoPixelMap
 } infoPixelMap;
 
 
-void split(char * string, char ** buffer, char splitter);
+void split(char * string, char buffer[4][5], char splitter);
 
 void loadPixelMap(infoPixelMap * info, char * pixmap[]);
 

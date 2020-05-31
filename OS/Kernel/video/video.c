@@ -56,12 +56,51 @@ void drawCharacter(int x, int y, int px, char letter){
 	}   
 }
 
-void drawBitmap(int x, int y, char * pixmap[]){ // max 16 colors support
 
+unsigned int intToString(unsigned int num, char * buffer)
+{
+    char stack[11];
+    int c = 0;
+    int i=0;
+    if(num==0) stack[i++]='0';
+    while(num!=0){
+        stack[i]=num%10+'0';
+        num = num/10;
+        i++;
+    }
+    c=i;
+    i--;
+    while(i>=0){
+        *buffer=stack[i];
+        buffer++;
+        i--;
+    }
+    *buffer=0;
+    return c;
+}
+
+void printNum(unsigned int num){
+    int width=1000;
+    int px=12;
+    int lettersPerLine = width/px; //cambiar a syscall getResolution
+    static int current;
+    char buffer[10];
+    int c = intToString(num,buffer);
+    buffer[c]=' ';
+    buffer[c+1]=0;
+    for(int i=0;buffer[i]!=0;i++){
+         int x_offset = px*(current%lettersPerLine);
+        int y_offset = (2*px)*(current/lettersPerLine);
+        drawCharacter(x_offset,y_offset,px,buffer[i]);
+        current++;
+    }
+    
+}
+void drawBitmap(int x, int y, char * pixmap[]){ // max 16 colors support
     infoPixelMap pixelMap;
     loadPixelMap(&pixelMap,pixmap);
-
-
+    //printNum(10);
+    //printNum(pixelMap.values.height);
     for(int j=0; j<pixelMap.values.height;j++){
         for(int i=0;i<pixelMap.values.width;i++){
             setPixel(i+x,j+y,getColor(i,j,&pixelMap));

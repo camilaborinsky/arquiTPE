@@ -1,5 +1,6 @@
 GLOBAL sys_drawCharacter
 GLOBAL sys_readErrors
+GLOBAL sys_drawBitmap
 
 
 sys_drawCharacter: ;int x, int y, int px, char letter
@@ -14,7 +15,7 @@ sys_drawCharacter: ;int x, int y, int px, char letter
 sys_readKeyboard:  ;char* buffer, int count
 	push rbp
 	mov rbp, rsp
-	mov rax, 2
+	mov rax, 0
 	int 80h
 	mov rsp, rbp
 	pop rbp
@@ -23,7 +24,7 @@ sys_readKeyboard:  ;char* buffer, int count
 sys_drawBitmap:  ;int x, int y, char * bitmap
 	push rbp
 	mov rbp, rsp
-	mov rax, 3
+	mov rax, 2
 	int 80h
 	mov rsp, rbp
 	pop rbp
@@ -33,7 +34,7 @@ sys_drawBitmap:  ;int x, int y, char * bitmap
 sys_cpuTemp:  ;double * temp
 	push rbp
 	mov rbp, rsp
-	mov rax, 4
+	mov rax, 3
 	int 80h
 	mov rsp, rbp
 	pop rbp
