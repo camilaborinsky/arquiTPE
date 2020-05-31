@@ -30,11 +30,35 @@ typedef struct errorStruct{
 	uint64_t opcode;
 	registerArgs registers;
 }errorStruct;
+
+divisionByZeroHandler(){
+	longjmp(1);
+}
+
+invalidOpcodeHandler(){
+	longjmp(7);
+}
+
 int main() {
 	 int scale=1;
 	 int offset=0;
 	 while(scale<43){
 	 	sys_drawCharacter(offset+=scale,0,scale+=1,'a');
 	 }
+	int focus=0;
+
+	setHandler(0,divisonByZeroHandler());
+	setHandler(6,invalidOpcodeHandler());
+	int entry=setjmp()-1;
+	if(entry == 0){
+		if(focus==0) leftDivisionByZeroHandler();
+		else rightDivisionByZeroHandler();
+	} else if(entry == 6){
+		if(focus==0) leftInvalidOpcodeHandler();
+		else rightInvalidOpcodeHandler();
+	}
+
+	//NORMAL RUN
+	
 	return 0;
 }
