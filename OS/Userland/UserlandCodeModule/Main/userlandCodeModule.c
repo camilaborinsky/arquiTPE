@@ -47,7 +47,7 @@ int main() {
 	 }
 	int focus=0;
 
-	setHandler(0,divisonByZeroHandler());
+	setHandler(0,divisionByZeroHandler());
 	setHandler(6,invalidOpcodeHandler());
 	int entry=setjmp()-1;
 	if(entry == 0){
