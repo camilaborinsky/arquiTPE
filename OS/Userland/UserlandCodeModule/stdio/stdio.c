@@ -34,7 +34,7 @@ void printNum(uint64_t num){
     buffer[c+1]=0;
     for(int i=0;buffer[i]!=0;i++){
          int x_offset = px*(current%lettersPerLine);
-        int y_offset = px*(current/lettersPerLine);
+        int y_offset = (2*px)*(current/lettersPerLine);
         sys_drawCharacter(x_offset,y_offset,px,buffer[i]);
         current++;
     }
