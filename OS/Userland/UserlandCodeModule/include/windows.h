@@ -15,6 +15,7 @@ typedef struct tabStruct{
 	int inIndex;
 	int px;
 	screen currentScreen;
+	int offsetCurrent;
 	int current;
 }tabStruct;
 

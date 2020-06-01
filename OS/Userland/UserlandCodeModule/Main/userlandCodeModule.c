@@ -9,8 +9,8 @@
 
 unsigned char focus = 0;
 
-tabStruct tab0 = {runGenerico,inControllerTab0,0,{0},{0},0,12,{0,0,500,1000},0};
-tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,0,1000,1000},0};
+tabStruct tab0 = {runGenerico,inControllerTab0,0,{0},{0},0,12,{0,0,500,1000},0,0};
+tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,0,1000,1000},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -36,9 +36,11 @@ int main() {
 				focus = (focus+1)%NUM_TABS;
 			}else{
 				tabs[focus]->inController(c);
-			}
-		
+			}	
 		}
+		printString("\n",tabs[focus]);
+		tabs[focus]->run(tabs[focus]->in,tabs[focus]->out);
+		printString(tabs[focus]->out,tabs[focus]);
 	}
 
 	return 0;

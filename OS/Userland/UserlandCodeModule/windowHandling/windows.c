@@ -9,13 +9,17 @@ void printString(char *string, tabStruct *tab)
     int lettersPerLine = width / px; //cambiar a syscall getResolution
     for (int i = 0; string[i] != 0; i++){
         if (string[i] == 8){
-            if(tab->current != 0){
+            if(tab->current >= tab->offsetCurrent){
                 string[i] = 32;
                 tab->current--;
                 int x_offset = tab->currentScreen.xi + px * ((tab->current) % lettersPerLine);
                 int y_offset = tab->currentScreen.yi + (2 * px) * ((tab->current) / lettersPerLine);
                 sys_drawCharacter(x_offset, y_offset, px, string[i]);
             }
+        }else if(string[i]=='\n'){
+            tab->current+=lettersPerLine- tab->current%lettersPerLine;
+            printString("usuario:>",tab);
+            tab->offsetCurrent=tab->current+1;
         }
         else{
             int x_offset = tab->currentScreen.xi + px * ((tab->current) % lettersPerLine);
