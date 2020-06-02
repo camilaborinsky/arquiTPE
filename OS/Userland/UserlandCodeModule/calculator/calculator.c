@@ -136,7 +136,7 @@ char tokenizer(char *in, token *out)
 
         if (isOperator(in[i]) || isBracket(in[i]))
         {
-            if(in[i]== '-' && isOperator(out[tokIdx-1].header)){
+            if(in[i]== '-' && (tokIdx == 0 || isOperator(out[tokIdx-1].header))){
                 signo = -1;
             }else{
                 out[tokIdx].header = in[i];
