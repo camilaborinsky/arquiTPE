@@ -9,16 +9,18 @@
 
 unsigned char focus = 0;
 
-tabStruct tab0 = {runGenerico,inControllerTab0,0,{0},{0},0,12,{0,0,500,1000},0,0};
-tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,0,1000,1000},0,0};
+tabStruct tab0 = {runGenerico,inControllerTab0,0,{0},{0},0,12,{3,3,497,997},0,0};
+tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,3,997,997},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
 registerEnv env;
 int main() {
 
-	sys_drawBitmap(500,0,linea_xpm);
-	
+	sys_drawBitmap(497,0,linea_vertical_color_xpm);
+	sys_drawBitmap(0,0,linea_vertical_color_xpm);
+	sys_drawBitmap(0,0,linea_horizontal_color_xmp);
+	sys_drawBitmap(0,1000,linea_horizontal_color_xmp);
 	int c=0;
 	
 
@@ -34,6 +36,25 @@ int main() {
 		while((c=getChar()) !='/n'){
 			if(c=='\t'){
 				focus = (focus+1)%NUM_TABS;
+				if(focus ==0){
+					sys_drawBitmap(497,0,linea_vertical_color_xpm);
+					sys_drawBitmap(500,0,linea_vertical_negra_xpm);
+					sys_drawBitmap(0,0,linea_vertical_color_xpm);
+					sys_drawBitmap(1000,0,linea_vertical_negra_xpm);
+					sys_drawBitmap(0,0,linea_horizontal_color_xmp);
+					sys_drawBitmap(0,1000,linea_horizontal_color_xmp);
+					sys_drawBitmap(500,0,linea_horizontal_negra_xmp);
+					sys_drawBitmap(500,1000,linea_horizontal_negra_xmp);
+				}else{//estamos en la pantalla de la derecha
+					sys_drawBitmap(497,0,linea_vertical_negra_xpm);
+					sys_drawBitmap(500,0,linea_vertical_color_xpm);
+					sys_drawBitmap(0,0,linea_vertical_negra_xpm);
+					sys_drawBitmap(1000,0,linea_vertical_color_xpm);
+					sys_drawBitmap(0,0,linea_horizontal_negra_xmp);
+					sys_drawBitmap(0,1000,linea_horizontal_negra_xmp);
+					sys_drawBitmap(500,0,linea_horizontal_color_xmp);
+					sys_drawBitmap(500,1000,linea_horizontal_color_xmp);
+				}
 			}else{
 				tabs[focus]->inController(c);
 			}	
