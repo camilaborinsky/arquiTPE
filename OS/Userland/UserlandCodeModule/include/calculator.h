@@ -1,14 +1,14 @@
-#ifndef _CALCULADORA_H_
-#define _CALCULADORA_H_
+#ifndef _CALCULATOR_H_
+#define _CALCULATOR_H_
 
 typedef struct token
 {
     char header;
     double value;
 } token;
-
+int doubleToString(double value, char * buffer);
 double stringToDouble(char * init, char * end);
-double evaluator(char * in);
+void evaluator(char * in, char * out);
 char infixToPosfix(token * infix, token * posfix);
 char getPrecedence(char first, char second);
 char tokenizer(char * in, token * out);

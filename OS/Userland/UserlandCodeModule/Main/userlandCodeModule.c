@@ -6,10 +6,11 @@
 #include <errors.h>
 #include <stdlib.h>
 #include "defs.h"
+#include <calculator.h>
 
 unsigned char focus = 0;
 
-tabStruct tab0 = {runGenerico,inControllerTab0,0,{0},{0},0,12,{3,3,497,997},0,0};
+tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,12,{3,3,497,997},0,0};
 tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,3,997,997},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
@@ -31,9 +32,10 @@ int main() {
 		tabs[focus]->exceptionsHandler(entry,0);
 	}
 
+	for(int i=0;i<NUM_TABS;i++)printString("\n",tabs[i]);
 
 	while(1){
-		while((c=getChar()) !='/n'){
+		while((c=getChar()) !='\n'){
 			if(c=='\t'){
 				focus = (focus+1)%NUM_TABS;
 				if(focus ==0){
@@ -59,9 +61,12 @@ int main() {
 				tabs[focus]->inController(c);
 			}	
 		}
+		tabs[focus]->inController(0);
 		printString("\n",tabs[focus]);
 		tabs[focus]->run(tabs[focus]->in,tabs[focus]->out);
 		printString(tabs[focus]->out,tabs[focus]);
+		printString("\n",tabs[focus]);
+		tabs[focus]->inIndex=0;
 	}
 
 	return 0;
@@ -73,19 +78,26 @@ void runGenerico(char * in,char * out){
 
 
 void inControllerTab1(int c){
-	tabs[1]->in[tabs[1]->inIndex++] = c;
+	if(c==8)
+		if(tabs[1]->inIndex>0)tabs[1]->inIndex--;
+	else
+		tabs[1]->in[tabs[1]->inIndex++] = c;
 	char str[2];
 	str[0] = c;
 	str[1] = 0;
-	printString(str,tabs[1]);
+	if(c!=0)printString(str,tabs[1]);
 
 }
 void inControllerTab0(int c){
-	tabs[0]->in[tabs[0]->inIndex++] = c;
+	if(c==8){
+		if(tabs[0]->inIndex>0)
+			tabs[0]->inIndex--;
+	}else
+		tabs[0]->in[tabs[0]->inIndex++] = c;
 	char str[2];
 	str[0] = c;
 	str[1] = 0; 
-	printString(str,tabs[0]);
+	if(c!=0)printString(str,tabs[0]);
 	
 }
 

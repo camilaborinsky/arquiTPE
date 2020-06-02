@@ -1,5 +1,5 @@
-#include "calculadora.h"
-#include <stdio.h>
+#include <calculator.h>
+#include <stdlib.h>
 
 #define OPERATORS 8
 #define NULLTERMINATED 0
@@ -14,6 +14,35 @@ char mat[OPERATORS - 1][OPERATORS] = {
     {1, 1, 1, 1, 1, 0, 0, 1},
     {1, 1, 1, 1, 1, 0, 0, 1},
     {0, 0, 0, 0, 0, 0, 0, 0}};
+
+int doubleToString(double value, char * buffer){
+	int precision=1000000000;
+    int c=0;
+    if(value<0){
+        value=-value;
+        buffer[c++]='-';
+    }
+	int m=value;
+	double p = value-m;
+	int r=(int)(p*precision+0.00001f);
+	
+	c += intToString(m,buffer+c);
+	buffer[c++]='.';
+	
+	
+	int aux=r;
+	while(r!=0 && 10*aux/precision<1){
+		buffer[c++]='0';
+		aux*=10;
+	}
+	
+	
+	
+	
+	intToString(r,buffer+c++);
+    buffer[c]=0;
+    return c;
+}
 
 double stringToDouble(char *init, char *end)
 {
@@ -41,23 +70,16 @@ double stringToDouble(char *init, char *end)
     return res;
 }
 
-double evaluator(char *in)
+void evaluator(char *in, char * out)
 {
     token toks[100];
     token posfix[100];
     double result = 0;
-    int i = 0;
 
     char error = tokenizer(in, toks);
     error = infixToPosfix(toks, posfix);
-    while(posfix[i].header!=NULLTERMINATED){
-        printf("%c , %f \n", posfix[i].header, posfix[i].value );
-        i++;
-    }
-    fflush(stdout);
     error = posfixEvaluator(posfix, &result);
-    printf("done posfixEvaluator");
-
+    doubleToString(result,out);
     return result;
 }
 
@@ -263,6 +285,7 @@ char isOperator(char tok)
     }
     return 0;
 }
+
 char isDigit(char tok)
 {
     return tok >= '0' && tok <= '9';
