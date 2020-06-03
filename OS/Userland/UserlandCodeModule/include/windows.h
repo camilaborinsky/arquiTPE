@@ -17,10 +17,15 @@ typedef struct tabStruct{
 	screen currentScreen;
 	int offsetCurrent;
 	int current;
+	int lineOffset;
+	int currentLine;
+	int lines[50];
 }tabStruct;
 
 void updateTab(tabStruct * currentTab);
 void clearTab(tabStruct * currentTab);
-
+void clearFromXtoY(int x, int y, tabStruct * tab);
 void printString(char *, tabStruct * );
+int strcpyTab(char * src, char * dest, tabStruct * tab);
+
 #endif
