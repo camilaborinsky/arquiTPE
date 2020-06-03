@@ -10,8 +10,8 @@
 
 unsigned char focus = 0;
 
-tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,12,{3,3,497,997},0,0,0,1,{0}};
-tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,3,997,997},0,0,0,1,{0}};
+tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,12,{3,3,497,997},0,0,0,0,{0}};
+tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{510,3,997,997},0,0,0,0,{0}};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -34,8 +34,9 @@ int main() {
 
 	//que arranquen las pantallas con username escrito
 	for(int i=0;i<NUM_TABS;i++){
-		tabs[i]->current +=strcpy(tabs[i]->out,"horacio:>");
-		tabs[focus]->offsetCurrent = tabs[focus]->current;
+		strcpyTab(tabs[focus]->out+tabs[i]->current,"horacio:>",tabs[i]);
+		tabs[i]->offsetCurrent = tabs[i]->current+1;
+		tabs[i]->inIndex=0;
 		updateTab(tabs[i]);
 	}
 
@@ -78,7 +79,7 @@ int main() {
 		strcpyTab(currentTab->out+currentTab->current,buffer,tabs[focus]);
 		tabs[focus]->inController('\n');
 		strcpyTab(currentTab->out+currentTab->current,"horacio:>",tabs[focus]);
-		tabs[focus]->offsetCurrent = tabs[focus]->current;
+		tabs[focus]->offsetCurrent = tabs[focus]->current + 1;
 		updateTab(currentTab);
 		//printString(tabs[focus]->out,tabs[focus]);
 		//printString("\n",tabs[focus]);
@@ -94,34 +95,48 @@ void runGenerico(char * in,char * out){
 
 
 void inControllerTab1(int c){
+
+	int width=tab1.currentScreen.xf - tab1.currentScreen.xi;
+	int lettersPerLine = width / tab1.px;
+	int lettersInThisLine =  tab1.current-tab1.lines[tab1.currentLine];
 	if(c==8){
 		if(tab1.inIndex>0)
 			tab1.inIndex--;
-		if(tab1.offsetCurrent<tab1.current)
+		if(tab1.offsetCurrent<=tab1.current){
 			tab1.current--;
-	}else
+			if(tab1.current<=tab1.lines[tab1.currentLine]) tab1.currentLine--;
+		}
+	}else if(c=='\n'){
+		tab1.lines[tab1.currentLine++] = tab1.current+1;
+	}else{
+		if(lettersInThisLine>=lettersPerLine) tab1.lines[tab1.currentLine++] = tab1.current+1;
 		tab1.in[tab1.inIndex++] = c;
-	char str[2];
-	str[0] = c;
-	str[1] = 0; 
+	} 
+		
+	// char str[2];
+	// str[0] = c;
+	// str[1] = 0; 
 	//if(c!=0)printString(str,tabs[0]);
 	if(c!=0 && c!=8)tab1.out[tab1.current++] = c;
-
+	
 }
+
 void inControllerTab0(int c){
 
 	int width=tab0.currentScreen.xf - tab0.currentScreen.xi;
-	int lettersPerLine = width / tab0.px;
+	int lettersPerLine = width/tab0.px;
 	int lettersInThisLine =  tab0.current-tab0.lines[tab0.currentLine];
 	if(c==8){
 		if(tab0.inIndex>0)
 			tab0.inIndex--;
-		if(tab0.offsetCurrent<tab0.current)
+		if(tab0.offsetCurrent<=tab0.current){
 			tab0.current--;
+			if(tab0.current<=tab0.lines[tab0.currentLine]) tab0.currentLine--;
+		}
 	}else if(c=='\n'){
-		tab0.lines[tab0.currentLine++] = tab0.current+1;
+		tab0.lines[++tab0.currentLine] = tab0.current+1;
 	}else{
-		if(lettersInThisLine>=lettersPerLine) tab0.lines[tab0.currentLine++] = tab0.current+1;
+		if(lettersInThisLine>=lettersPerLine) tab0.lines[++tab0.currentLine] = tab0.current+1;
 		tab0.in[tab0.inIndex++] = c;
 	} 
 		

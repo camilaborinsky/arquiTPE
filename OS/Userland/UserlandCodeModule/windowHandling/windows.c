@@ -8,7 +8,6 @@ int strcpyTab(char * dest, char * src, tabStruct * tab){
     while(src[i]!=0){
         tab->inController(src[i++]);
     }
-    dest[i]=0;
     return i;
 }
 
@@ -36,10 +35,10 @@ void clearFromXtoY(int x, int y, tabStruct * tab){
 }
 
 void updateTab(tabStruct * tab){
-    //clearTab(tab);
+    clearTab(tab);
     tab->out[tab->current]=0;
-    printNum(tab->currentLine);
-    //printString(tab->out+tab->lines[tab->lineOffset],tab);
+    //printNum(tab->currentLine);
+    printString(tab->out+tab->lines[tab->lineOffset],tab);
 }
 
 
