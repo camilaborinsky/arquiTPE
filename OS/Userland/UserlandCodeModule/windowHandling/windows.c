@@ -15,7 +15,8 @@ void clearTab(tabStruct * tab){
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
     int lettersPerLine = width / px;
-    clearFromXtoY(tab->currentLine*lettersPerLine,(tab->currentLine+1)*lettersPerLine,tab);
+    int pos = tab->currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine];
+    clearFromXtoY(pos-1,pos+1,tab);
     return;
 }
 

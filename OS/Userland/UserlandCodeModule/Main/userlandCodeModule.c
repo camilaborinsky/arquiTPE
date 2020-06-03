@@ -94,59 +94,38 @@ void runGenerico(char * in,char * out){
 }
 
 
-void inControllerTab1(int c){
-
-	int width=tab1.currentScreen.xf - tab1.currentScreen.xi;
-	int lettersPerLine = width / tab1.px;
-	int lettersInThisLine =  tab1.current-tab1.lines[tab1.currentLine];
+void genericInController(int c, tabStruct * tab){
+	int width=tab->currentScreen.xf - tab->currentScreen.xi;
+	int lettersPerLine = width/tab->px;
+	int lettersInThisLine =  tab->current-tab->lines[tab->currentLine];
 	if(c==8){
-		if(tab1.inIndex>0)
-			tab1.inIndex--;
-		if(tab1.offsetCurrent<=tab1.current){
-			tab1.current--;
-			if(tab1.current<=tab1.lines[tab1.currentLine]) tab1.currentLine--;
+		if(tab->inIndex>0)
+			tab->inIndex--;
+		if(tab->offsetCurrent<=tab->current){
+			tab->current--;
+			if(tab->current<=tab->lines[tab->currentLine]) tab->currentLine--;
 		}
 	}else if(c=='\n'){
-		tab1.lines[tab1.currentLine++] = tab1.current+1;
+		tab->lines[++tab->currentLine] = tab->current+1;
 	}else{
-		if(lettersInThisLine>=lettersPerLine) tab1.lines[tab1.currentLine++] = tab1.current+1;
-		tab1.in[tab1.inIndex++] = c;
+		if(lettersInThisLine>=lettersPerLine) tab->lines[++tab->currentLine] = tab->current+1;
+		tab->in[tab->inIndex++] = c;
 	} 
 		
-	// char str[2];
-	// str[0] = c;
-	// str[1] = 0; 
-	//if(c!=0)printString(str,tabs[0]);
-	if(c!=0 && c!=8)tab1.out[tab1.current++] = c;
+	if(c!=0 && c!=8)tab->out[tab->current++] = c;
+}
+
+void inControllerTab1(int c){
+	genericInController(c,&tab1);
 	
 }
 
 void inControllerTab0(int c){
 
-	int width=tab0.currentScreen.xf - tab0.currentScreen.xi;
-	int lettersPerLine = width/tab0.px;
-	int lettersInThisLine =  tab0.current-tab0.lines[tab0.currentLine];
-	if(c==8){
-		if(tab0.inIndex>0)
-			tab0.inIndex--;
-		if(tab0.offsetCurrent<=tab0.current){
-			tab0.current--;
-			if(tab0.current<=tab0.lines[tab0.currentLine]) tab0.currentLine--;
-		}
-	}else if(c=='\n'){
-		tab0.lines[++tab0.currentLine] = tab0.current+1;
-	}else{
-		if(lettersInThisLine>=lettersPerLine) tab0.lines[++tab0.currentLine] = tab0.current+1;
-		tab0.in[tab0.inIndex++] = c;
-	} 
-		
-	// char str[2];
-	// str[0] = c;
-	// str[1] = 0; 
-	//if(c!=0)printString(str,tabs[0]);
-	if(c!=0 && c!=8)tab0.out[tab0.current++] = c;
+	genericInController(c,&tab0);
 	
 }
+
 
 void divisionByZeroHandler(){
 	longjmp(&env,1);
