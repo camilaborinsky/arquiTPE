@@ -1,6 +1,16 @@
 #include<stdint.h>
 #include<syscalls.h>
 
+
+void strcpy(char * dest, char * src){
+    int i =0;
+    while(src[i]!=0){
+        dest[i] = src[i++];
+    }
+    dest[i]=0;
+
+}
+
 int getChar(){
     int character;
     int count = 0;

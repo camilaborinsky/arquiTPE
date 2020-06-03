@@ -5,6 +5,8 @@
 #define NULLTERMINATED 0
 #define NUMBER 1
 
+
+
 char operators[OPERATORS] = {'+', '-', '*', '/', '%', '^', '(', ')'};
 char mat[OPERATORS - 1][OPERATORS] = {
     {1, 1, 0, 0, 0, 0, 0, 1},
@@ -44,8 +46,7 @@ int doubleToString(double value, char * buffer){
     return c;
 }
 
-double stringToDouble(char *init, char *end)
-{
+double stringToDouble(char *init, char *end){
     double res = 0;
     char comma = 0;
     double exp = 1.0f / 10;
@@ -70,21 +71,40 @@ double stringToDouble(char *init, char *end)
     return res;
 }
 
-void evaluator(char *in, char * out)
-{
+
+char * error_msg[]={"Error de formato en la expresion: 2 signos de puntuacion en un mismo numero",
+"Error de formato en la expresion: caracter invalido ingresado",
+"Error de formato en la expresion: falta algun parentesis",
+"Error de formato en la expresion: falta argumento",
+"Error de formato en la expresion: falta operador",
+"Volve a primaria pelotudo, division por cero"
+};
+
+
+void evaluator(char *in, char * out){
     token toks[100];
     token posfix[100];
     double result = 0;
 
     char error = tokenizer(in, toks);
+    if(error != OK){
+        strcpy(out, error_msg[error-1]);
+        return;
+    }
     error = infixToPosfix(toks, posfix);
+    if(error != OK){
+        strcpy(out, error_msg[error-1]);
+        return;
+    }
     error = posfixEvaluator(posfix, &result);
+    if(error != OK){
+        strcpy(out, error_msg[error-1]);
+        return;
+    }
     doubleToString(result,out);
-    return result;
 }
 
-char posfixEvaluator(token *expression, double *result)
-{
+char posfixEvaluator(token *expression, double *result){
     double stack[100];
     int idx = 0;
     int exprIdx = 0;
@@ -100,15 +120,16 @@ char posfixEvaluator(token *expression, double *result)
         {
             if (idx == 0)
             {
-                return -1;
+                return BADFORMAT_MISSINGARG;
             }
             double aux1 = stack[--idx];
             if (idx == 0)
             {
-                return -1;
+                return BADFORMAT_MISSINGARG;
             }
             double aux2 = stack[--idx];
-            stack[idx] = evaluateTok(aux2, aux1, expression[exprIdx].header);
+            char error = evaluateTok(aux2, aux1, expression[exprIdx].header,&stack[idx]);
+            if(error!=OK) return error;
             idx++;
             exprIdx++;
         }
@@ -116,17 +137,17 @@ char posfixEvaluator(token *expression, double *result)
 
     if (idx == 0)
     {
-        return -1;
+        return BADFORMAT_MISSINGARG;
     }
     *result = stack[--idx];
     if (idx != 0)
     {
-        return -1;
+        return BADFORMAT_MISSINGOP;
     }
+    return OK;
 }
 
-char tokenizer(char *in, token *out)
-{
+char tokenizer(char *in, token *out){
     int signo = 1;
     int i = 0;
     int tokIdx = 0;
@@ -158,7 +179,7 @@ char tokenizer(char *in, token *out)
                     }
                     else
                     {
-                        return -1;
+                        return BADFORMAT_2DOTS;
                     }
                 }
 
@@ -179,14 +200,14 @@ char tokenizer(char *in, token *out)
         }
         else
         {
-            return -1;
+            return BADFORMAT_UNEXPECTEDCHAR;
         }
     }
     out[tokIdx].header = NULLTERMINATED;
+    return OK;
 }
 
-char infixToPosfix(token *infija, token *posfija)
-{
+char infixToPosfix(token *infija, token *posfija){
     int i = 0;
     token tok;
     token stack[100];
@@ -201,7 +222,7 @@ char infixToPosfix(token *infija, token *posfija)
             {
                 if (tok.header == ')')
                 {
-                    return -1;
+                    return BADFORMAT_UNBALANCEDPAR;
                 }
                 stack[idx] = tok;
                 idx++;
@@ -221,7 +242,7 @@ char infixToPosfix(token *infija, token *posfija)
                     }
                     else
                     {
-                        return -1;
+                        return BADFORMAT_UNBALANCEDPAR;
                     }
                 }
                 else
@@ -241,7 +262,7 @@ char infixToPosfix(token *infija, token *posfija)
     {
         if (isBracket(stack[idx - 1].header))
         {
-            return -1;
+            return BADFORMAT_UNBALANCEDPAR;
         }
         else
         {
@@ -249,11 +270,10 @@ char infixToPosfix(token *infija, token *posfija)
         }
     }
     posfija[out].header = NULLTERMINATED;
-    return out;
+    return OK;
 }
 
-char getPrecedence(char first, char second)
-{
+char getPrecedence(char first, char second){
     for (int i = 0; i < OPERATORS; i++)
     {
         if (first == operators[i])
@@ -269,13 +289,11 @@ char getPrecedence(char first, char second)
     return mat[first][second];
 }
 
-char isBracket(char tok)
-{
+char isBracket(char tok){
     return (tok == '(' || tok == ')');
 }
 
-char isOperator(char tok)
-{
+char isOperator(char tok){
     for (int i = 0; i < OPERATORS - 2; i++)
     {
         if (tok == operators[i])
@@ -286,32 +304,32 @@ char isOperator(char tok)
     return 0;
 }
 
-char isDigit(char tok)
-{
+char isDigit(char tok){
     return tok >= '0' && tok <= '9';
 }
 
-double evaluateTok(double first, double second, char op)
-{
+char evaluateTok(double first, double second, char op, double * result){
     switch (op)
     {
     case '+':
-        return first + second;
+        *result = first + second;
         break;
     case '-':
-        return first - second;
+        *result = first - second;
         break;
     case '*':
-        return first * second;
+        *result = first * second;
         break;
     case '/':
-        return first / second;
+        if(second==0) return DIVISION_BY_ZERO;
+        *result = first / second;
         break;
     case '^':
-        return 1;
+        *result = 1;
         break;
     case '%':
-        return 0;
+        *result = 0;
         break;
     }
+    return OK;
 }
