@@ -7,6 +7,7 @@ int strcpyTab(char * dest, char * src, tabStruct * tab){
     int i =0;
     while(src[i]!=0){
         tab->inController(src[i++]);
+        updateRadius(tab,1);
     }
     return i;
 }
@@ -31,9 +32,9 @@ void updateTab(tabStruct * tab){
     int px = tab->px;
     int lettersPerLine = width / px; //cambiar a syscall getResolution
     int linesInScreen = height/(2*px);
-    clearFromXtoY(0,linesInScreen*lettersPerLine,tab);
+    clearFromXtoY(0,linesInScreen*lettersPerLine+1,tab);
     tab->out[tab->current]=0;
-    printString(tab->out+tab->lines[tab->lineOffset],tab);
+    printString(0,tab->out+tab->lines[tab->lineOffset%LINES_LENGTH],tab);
 }
 
 //borra/blanquea los contenidos de los pixeles que ocupan el caracter actual y los que estan a radius de distancia
@@ -41,19 +42,19 @@ void updateRadius(tabStruct * tab, int radius){
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
     int lettersPerLine = width / px;
-    int pos = tab->currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine];
+    int pos = tab->currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine%LINES_LENGTH];
     clearFromXtoY(pos-radius,pos+radius,tab);
     tab->out[tab->current]=0;
-    printString(tab->out+tab->lines[tab->lineOffset],tab);
+    printString((tab->currentLine-tab->lineOffset)*lettersPerLine,tab->out+tab->lines[tab->currentLine%LINES_LENGTH],tab);
 }
 
 
-void printString(char *string, tabStruct *tab)
+void printString(int start, char *string, tabStruct *tab)
 {
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
     int lettersPerLine = width / px; //cambiar a syscall getResolution
-    int current=0;
+    int current=start;
     for (int i = 0; string[i] != 0; i++){
         if(string[i]=='\n'){
             current+=lettersPerLine- current%lettersPerLine;

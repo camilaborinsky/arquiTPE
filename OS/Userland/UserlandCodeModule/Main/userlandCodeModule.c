@@ -103,21 +103,21 @@ void genericInController(int c, tabStruct * tab){
 	int height=tab->currentScreen.yf - tab->currentScreen.yi;
 	int lettersPerLine = width/tab->px;
 	int linesInScreen = height/(2*tab->px);
-	int lettersInThisLine =  tab->current-tab->lines[tab->currentLine];
+	int lettersInThisLine =  tab->current-tab->lines[tab->currentLine%LINES_LENGTH];
 	if(c==8){
 		if(tab->inIndex>0)
 			tab->inIndex--;
 		if(tab->offsetCurrent<=tab->current){
 			tab->current--;
-			if(tab->current<=tab->lines[tab->currentLine]) tab->currentLine--;
+			if(tab->current<=tab->lines[tab->currentLine%LINES_LENGTH]) tab->currentLine--;
 		}
 	}else if(c=='\n'){
-		tab->lines[++tab->currentLine] = tab->current+1;
-		if(tab->currentLine >= linesInScreen) tab->lineOffset++;
+		tab->lines[++tab->currentLine%LINES_LENGTH] = tab->current+1;
+		if(tab->currentLine >= linesInScreen-10) tab->lineOffset++;
 	}else{
 		if(lettersInThisLine>=lettersPerLine){
-			tab->lines[++tab->currentLine] = tab->current+1;
-			if(tab->currentLine >= linesInScreen) tab->lineOffset++;
+			tab->lines[++tab->currentLine%LINES_LENGTH] = tab->current+1;
+			if(tab->currentLine >= linesInScreen-10) tab->lineOffset++;
 		}
 		tab->in[tab->inIndex++] = c;
 	} 
