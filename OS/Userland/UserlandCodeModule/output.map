@@ -1,0 +1,72 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+
+.text           0x0000000000400000     0x1000
+ *(.text*)
+ .text          0x0000000000400000       0x7d loader.o
+                0x0000000000400000                _start
+                0x0000000000400032                memset
+ .text          0x000000000040007d      0x188 stdio/stdio.o
+                0x000000000040007d                intToString
+                0x0000000000400141                printNum
+ .text          0x0000000000400205       0xd5 Main/userlandCodeModule.o
+                0x0000000000400205                printString
+                0x00000000004002a7                main
+ *fill*         0x00000000004002da        0x6 
+ .text          0x00000000004002e0       0x50 syscalls/syscallsasm.o
+                0x00000000004002e0                sys_drawCharacter
+                0x0000000000400300                sys_drawBitmap
+                0x0000000000400320                sys_readErrors
+ .text          0x0000000000400330       0x99 setJmp/setJmp.o
+                0x0000000000400330                setJmp
+                0x0000000000400380                longJmp
+                0x0000000000401000                . = ALIGN (0x1000)
+ *fill*         0x00000000004003c9      0xc37 
+
+.eh_frame       0x0000000000401000      0x108
+ .eh_frame      0x0000000000401000       0x58 loader.o
+ .eh_frame      0x0000000000401058       0x58 stdio/stdio.o
+ .eh_frame      0x00000000004010b0       0x58 Main/userlandCodeModule.o
+
+.data           0x0000000000402000    0x43cab
+ *(.data*)
+ .data          0x0000000000402000        0x0 loader.o
+ .data          0x0000000000402000        0x0 stdio/stdio.o
+ .data          0x0000000000402000     0x1600 Main/userlandCodeModule.o
+                0x0000000000402000                cami_xpm
+ *(.rodata*)
+ .rodata        0x0000000000403600    0x426ab Main/userlandCodeModule.o
+
+.bss            0x0000000000446000        0x8
+                0x0000000000446000                bss = .
+ *(.bss*)
+ .bss           0x0000000000446000        0x0 loader.o
+ .bss           0x0000000000446000        0x4 stdio/stdio.o
+ .bss           0x0000000000446004        0x4 Main/userlandCodeModule.o
+                0x0000000000446008                endOfBinary = .
+LOAD loader.o
+LOAD stdio/stdio.o
+LOAD Main/userlandCodeModule.o
+LOAD syscalls/syscallsasm.o
+LOAD setJmp/setJmp.o
+OUTPUT(../0000-userlandCodeModule.bin binary)
+
+.comment        0x0000000000000000       0x6f
+ .comment       0x0000000000000000       0x25 loader.o
+ .comment       0x0000000000000025       0x25 stdio/stdio.o
+ .comment       0x000000000000004a       0x25 Main/userlandCodeModule.o
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 loader.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 stdio/stdio.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 Main/userlandCodeModule.o
