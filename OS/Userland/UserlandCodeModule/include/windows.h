@@ -22,6 +22,7 @@ typedef struct tabStruct{
 	int lines[50];
 }tabStruct;
 
+void updateRadius(tabStruct * tab, int radius);
 void updateTab(tabStruct * currentTab);
 void clearTab(tabStruct * currentTab);
 void clearFromXtoY(int x, int y, tabStruct * tab);

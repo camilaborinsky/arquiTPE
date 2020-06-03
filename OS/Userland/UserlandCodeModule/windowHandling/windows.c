@@ -11,16 +11,6 @@ int strcpyTab(char * dest, char * src, tabStruct * tab){
     return i;
 }
 
-void clearTab(tabStruct * tab){
-    int width = tab->currentScreen.xf - tab->currentScreen.xi;
-    int px = tab->px;
-    int lettersPerLine = width / px;
-    int pos = tab->currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine];
-    clearFromXtoY(pos-1,pos+1,tab);
-    return;
-}
-
-
 void clearFromXtoY(int x, int y, tabStruct * tab){
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
@@ -36,9 +26,24 @@ void clearFromXtoY(int x, int y, tabStruct * tab){
 }
 
 void updateTab(tabStruct * tab){
-    clearTab(tab);
+    int width = tab->currentScreen.xf - tab->currentScreen.xi;
+    int height = tab->currentScreen.yf - tab->currentScreen.yi;
+    int px = tab->px;
+    int lettersPerLine = width / px; //cambiar a syscall getResolution
+    int linesInScreen = height/(2*px);
+    clearFromXtoY(0,linesInScreen*lettersPerLine,tab);
     tab->out[tab->current]=0;
-    //printNum(tab->currentLine);
+    printString(tab->out+tab->lines[tab->lineOffset],tab);
+}
+
+//borra/blanquea los contenidos de los pixeles que ocupan el caracter actual y los que estan a radius de distancia
+void updateRadius(tabStruct * tab, int radius){
+    int width = tab->currentScreen.xf - tab->currentScreen.xi;
+    int px = tab->px;
+    int lettersPerLine = width / px;
+    int pos = tab->currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine];
+    clearFromXtoY(pos-radius,pos+radius,tab);
+    tab->out[tab->current]=0;
     printString(tab->out+tab->lines[tab->lineOffset],tab);
 }
 
