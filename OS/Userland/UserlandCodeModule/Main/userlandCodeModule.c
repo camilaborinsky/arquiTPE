@@ -32,7 +32,11 @@ int main() {
 		tabs[focus]->exceptionsHandler(entry,0);
 	}
 
-	for(int i=0;i<NUM_TABS;i++)printString("\n",tabs[i]);
+	//que arranquen las pantallas con username escrito
+	for(int i=0;i<NUM_TABS;i++){
+		tabs[i]->current +=strcpy(tabs[i]->out,"horacio:>");
+		updateTab(tabs[i]);
+	}
 
 	while(1){
 		while((c=getChar()) !='\n'){
@@ -59,13 +63,24 @@ int main() {
 				}
 			}else{
 				tabs[focus]->inController(c);
-			}	
+			}
+			updateTab(tabs[focus]);	
 		}
+
+		tabStruct * currentTab = tabs[focus];
+
 		tabs[focus]->inController(0);
-		printString("\n",tabs[focus]);
-		tabs[focus]->run(tabs[focus]->in,tabs[focus]->out);
-		printString(tabs[focus]->out,tabs[focus]);
-		printString("\n",tabs[focus]);
+		tabs[focus]->out[tabs[focus]->current++]='\n';
+		//printString("\n",tabs[focus]);
+		char buffer[64]={0};
+		tabs[focus]->run(tabs[focus]->in,buffer);
+		currentTab->current +=strcpy(currentTab->out+currentTab->current,buffer);
+		tabs[focus]->out[tabs[focus]->current++]='\n';
+		currentTab->current +=strcpy(currentTab->out+currentTab->current,"horacio:>");
+		 tabs[focus]->offsetCurrent = tabs[focus]->current;
+		updateTab(currentTab);
+		//printString(tabs[focus]->out,tabs[focus]);
+		//printString("\n",tabs[focus]);
 		tabs[focus]->inIndex=0;
 	}
 
@@ -85,7 +100,8 @@ void inControllerTab1(int c){
 	char str[2];
 	str[0] = c;
 	str[1] = 0;
-	if(c!=0)printString(str,tabs[1]);
+	//if(c!=0)printString(str,tabs[1]);
+	if(c!=0)tab1.out[tab1.current++] = c;
 
 }
 void inControllerTab0(int c){
@@ -97,7 +113,8 @@ void inControllerTab0(int c){
 	char str[2];
 	str[0] = c;
 	str[1] = 0; 
-	if(c!=0)printString(str,tabs[0]);
+	//if(c!=0)printString(str,tabs[0]);
+	if(c!=0)tab0.out[tab0.current++] = c;
 	
 }
 

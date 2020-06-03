@@ -11,13 +11,16 @@ typedef struct tabStruct{
 	void (* inController) (int);
 	void (* exceptionsHandler)(int,errorStruct *);
 	char in[512];
-	char out[512];
+	char out[2000];
 	int inIndex;
 	int px;
 	screen currentScreen;
 	int offsetCurrent;
 	int current;
 }tabStruct;
+
+void updateTab(tabStruct * currentTab);
+void clearTab(tabStruct * currentTab);
 
 void printString(char *, tabStruct * );
 #endif

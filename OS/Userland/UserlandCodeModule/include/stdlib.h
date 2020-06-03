@@ -6,6 +6,6 @@
 
 void printNum(uint64_t num);
 int getChar();
-void strcpy(char * dest, char * source);
+int strcpy(char * dest, char * source);
 
 #endif
