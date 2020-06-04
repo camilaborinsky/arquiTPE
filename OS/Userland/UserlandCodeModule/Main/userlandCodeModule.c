@@ -7,14 +7,15 @@
 #include <stdlib.h>
 #include "defs.h"
 #include <calculator.h>
+#include <shell.h>
 
 #define RADIUS 1
 unsigned char focus = 0;
 #define resX  1024
 #define resY  768
 
-tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,12,{3,3,(resX/2)-3,resY-3},0,0};
-tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{(resX/2)+5,3,resX-3,resY-3},0,0};
+tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,15,{3,3,(resX/2)-3,resY-3},0,0};
+tabStruct tab1 = {shell,inControllerTab1,0,{0},{0},0,10,{(resX/2)+5,3,resX-3,resY-3},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -72,6 +73,8 @@ int main() {
 
 		tabStruct * currentTab = tabs[focus];
 		drawString("\n",currentTab);
+		//drawString(currentTab->in,currentTab);
+		//drawString("\n",currentTab);
 		currentTab->run(currentTab->in,currentTab->out);
 		drawString(currentTab->out,currentTab);
 		drawString("\n",currentTab);

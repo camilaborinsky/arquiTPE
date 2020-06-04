@@ -12,6 +12,28 @@ int strcpy(char * dest, char * src){
 
 }
 
+int strcmp(char * str1, char * str2){
+    int i =0;
+    while(str1[i] != 0 && str2[i] != 0 ){
+        if(str1[i] != str2[i]){
+            return str1[i]-str2[i];
+        }
+        i++;
+    }
+    return str1[i]-str2[i];
+}
+
+void deleteChar(char * str, char c){
+    int i=0,j=0;
+    while(str[i]!= 0){
+        if(str[i] != c){ 
+            str[j++]=str[i];
+        }
+        i++;
+    }
+    str[j]=0;
+}
+
 int getChar(){
     int character;
     int count = 0;

@@ -24,7 +24,7 @@ typedef struct tabStruct{
 }tabStruct;
 
 
-void printString(char *, tabStruct * );
+void drawString(char *, tabStruct * );
 int strcpyTab(char * src, char * dest, tabStruct * tab);
 
 #endif

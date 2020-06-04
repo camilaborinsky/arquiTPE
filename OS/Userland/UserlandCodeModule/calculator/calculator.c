@@ -77,7 +77,7 @@ char * error_msg[]={"Error de formato en la expresion: 2 signos de puntuacion en
 "Error de formato en la expresion: falta algun parentesis",
 "Error de formato en la expresion: falta argumento",
 "Error de formato en la expresion: falta operador",
-"Volve a primaria pelotudo, division por cero"
+"El limite de una division con denominador tendiendo a 0, es infinito"
 };
 
 
@@ -328,7 +328,8 @@ char evaluateTok(double first, double second, char op, double * result){
         *result = 1;
         break;
     case '%':
-        *result = 0;
+        if(second==0) return DIVISION_BY_ZERO;
+        *result = ((int)first)%((int)second);
         break;
     }
     return OK;

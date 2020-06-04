@@ -30,7 +30,7 @@ void drawString( char *string, tabStruct *tab)
                 sys_drawCharacter(x_offset, y_offset, px, string[i]);
                 tab->current++;
             }
-            if((tab->current) / lettersPerLine>=totalLines){
+            if((tab->current) / lettersPerLine>=(totalLines-1)){
                 sys_scroll(tab->currentScreen.xi, tab->currentScreen.yi, \
                             tab->currentScreen.xf, tab->currentScreen.yf, \
                             2 * px);
