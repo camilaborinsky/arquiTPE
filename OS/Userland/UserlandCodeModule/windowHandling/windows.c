@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <syscalls.h>
 
-void printString( char *string, tabStruct *tab)
-{
+void drawString( char *string, tabStruct *tab)
+{   
+    int height = tab->currentScreen.yf - tab->currentScreen.yi;
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
     int lettersPerLine = width / px; //cambiar a syscall getResolution
+    int totalLines = height/(2*px);
     tab->current;
     for (int i = 0; string[i] != 0; i++){
         if (string[i] == 8){
@@ -17,15 +19,23 @@ void printString( char *string, tabStruct *tab)
                 int y_offset = tab->currentScreen.yi + (2 * px) * ((tab->current) / lettersPerLine);
                 sys_drawCharacter(x_offset, y_offset, px, string[i]);
             }
-        } else if(string[i]=='\n'){
-           tab->current+=lettersPerLine- tab->current%lettersPerLine;
+        } else {
+            if(string[i]=='\n'){
+                tab->current+=lettersPerLine- tab->current%lettersPerLine;
 
-        }
-        else{
-            int x_offset = tab->currentScreen.xi + px * ((tab->current) % lettersPerLine);
-            int y_offset = tab->currentScreen.yi + (2 * px) * ((tab->current)/ lettersPerLine);
-            sys_drawCharacter(x_offset, y_offset, px, string[i]);
-            tab->current++;
+            }
+            else{
+                int x_offset = tab->currentScreen.xi + px * ((tab->current) % lettersPerLine);
+                int y_offset = tab->currentScreen.yi + (2 * px) * ((tab->current)/ lettersPerLine);
+                sys_drawCharacter(x_offset, y_offset, px, string[i]);
+                tab->current++;
+            }
+            if((tab->current) / lettersPerLine>=totalLines){
+                sys_scroll(tab->currentScreen.xi, tab->currentScreen.yi, \
+                            tab->currentScreen.xf, tab->currentScreen.yf, \
+                            2 * px);
+                tab->current-=lettersPerLine;
+            }
         }
     }
 }

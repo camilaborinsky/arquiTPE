@@ -37,8 +37,8 @@ int main() {
 
 	//que arranquen las pantallas con username escrito
 	for(int i=0;i<NUM_TABS;i++){
-		strcpy(tabs[i]->out+tabs[i]->current,"horacio:>");
-		printString(tabs[i]->out,tabs[i]);
+		strcpy(tabs[i]->out+tabs[i]->current,"usr@coronavinux:>");
+		drawString(tabs[i]->out,tabs[i]);
 		tabs[i]->offsetCurrent = tabs[i]->current+1;
 		tabs[i]->inIndex=0;
 	}
@@ -71,16 +71,15 @@ int main() {
 		}
 
 		tabStruct * currentTab = tabs[focus];
-		printString("\n",currentTab);
-		printString(currentTab->in,currentTab);
-		printString("\n",currentTab);
+		drawString("\n",currentTab);
 		currentTab->run(currentTab->in,currentTab->out);
-		printString(currentTab->out,currentTab);
-		printString("\n",currentTab);
-		strcpy(currentTab->out,"horacio:>");
-		printString(currentTab->out,currentTab);
+		drawString(currentTab->out,currentTab);
+		drawString("\n",currentTab);
+		strcpy(currentTab->out,"usr@coronavinux:>");
+		drawString(currentTab->out,currentTab);
 		currentTab->offsetCurrent = currentTab->current+1;
 		currentTab->inIndex=0;
+		currentTab->in[0]=0;
 	}
 
 	return 0;
@@ -103,7 +102,7 @@ void genericInController(int c, tabStruct * tab){
 
 	tab->out[0]=c;
 	tab->out[1]=0;
-	if(c!=0)printString(tab->out,tab);	
+	if(c!=0)drawString(tab->out,tab);	
 }
 
 void inControllerTab1(int c){

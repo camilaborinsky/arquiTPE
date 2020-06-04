@@ -1,20 +1,5 @@
 #include "xPixMap.h"
 
-
-void printString(char * string){
-    int width=1000;
-    int px=12;
-    int lettersPerLine = width/px; //cambiar a syscall getResolution
-    static int current;
-    for(int i=0;string[i]!=0;i++){
-         int x_offset = px*(current%lettersPerLine);
-        int y_offset = (2*px)*(current/lettersPerLine);
-        drawCharacter(x_offset,y_offset,px,string[i]);
-        current++;
-    }
-    
-}
-void printNum(int);
 void split(char * string, char buffer[4][5], char splitter){
     char index = 0;
     char actual=0;
@@ -67,7 +52,6 @@ void stringToColor(char * string, colorStruct * color){
 
 
 
-void printNum(int);
 void loadPixelMap(infoPixelMap * info, char * pixmap[]){
     char valuesBuffer[4][5];
     //printString(pixmap[0]);

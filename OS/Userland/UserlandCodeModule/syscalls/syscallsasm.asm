@@ -3,6 +3,7 @@ GLOBAL sys_readErrors
 GLOBAL sys_drawBitmap
 GLOBAL sys_readKeyboard
 GLOBAL sys_setHandler
+GLOBAL sys_scroll
 
 sys_readKeyboard:  ;char* buffer, int count,int * amount
 	push rbp
@@ -61,6 +62,14 @@ sys_setHandler: ; int exception, void * func
 	pop rbp
 	ret
 
+sys_scroll: ; int xi, int yi, int xf, int yf, int px
+	push rbp
+	mov rbp, rsp
+	mov rax, 6
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
 
 
 
