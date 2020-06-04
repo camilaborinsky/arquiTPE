@@ -42,10 +42,11 @@ void updateRadius(tabStruct * tab, int radius){
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
     int lettersPerLine = width / px;
-    int pos = tab->currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine%LINES_LENGTH];
+    int currentLine = tab->currentLine - tab->lineOffset;
+    int pos = currentLine*lettersPerLine + tab->current - tab->lines[tab->currentLine%LINES_LENGTH];
     clearFromXtoY(pos-radius,pos+radius,tab);
     tab->out[tab->current]=0;
-    printString((tab->currentLine-tab->lineOffset)*lettersPerLine,tab->out+tab->lines[tab->currentLine%LINES_LENGTH],tab);
+    printString(currentLine*lettersPerLine,tab->out+tab->lines[tab->currentLine%LINES_LENGTH],tab);
 }
 
 
