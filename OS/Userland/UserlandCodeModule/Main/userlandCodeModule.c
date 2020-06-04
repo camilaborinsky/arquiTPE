@@ -13,8 +13,8 @@ unsigned char focus = 0;
 #define resX  1024
 #define resY  768
 
-tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,12,{3,3,(resX/2)-3,resY-3},0,0,0,0,{0}};
-tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{(resX/2)+5,3,resX-3,resY-3},0,0,0,0,{0}};
+tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,12,{3,3,(resX/2)-3,resY-3},0,0};
+tabStruct tab1 = {runGenerico,inControllerTab1,0,{0},{0},0,12,{(resX/2)+5,3,resX-3,resY-3},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -37,12 +37,11 @@ int main() {
 
 	//que arranquen las pantallas con username escrito
 	for(int i=0;i<NUM_TABS;i++){
-		strcpyTab(tabs[focus]->out+tabs[i]->current,"horacio:>",tabs[i]);
+		strcpy(tabs[i]->out+tabs[i]->current,"horacio:>");
+		printString(tabs[i]->out,tabs[i]);
 		tabs[i]->offsetCurrent = tabs[i]->current+1;
 		tabs[i]->inIndex=0;
-		updateRadius(tabs[i], RADIUS);
 	}
-
 	while(1){
 		while((c=getChar()) !='\n'){
 			if(c=='\t'){
@@ -69,25 +68,19 @@ int main() {
 			}else{
 				tabs[focus]->inController(c);
 			}
-			updateRadius(tabs[focus], RADIUS);	
 		}
 
 		tabStruct * currentTab = tabs[focus];
-
-		tabs[focus]->inController(0);
-		tabs[focus]->inController('\n');
-		//printString("\n",tabs[focus]);
-		char buffer[64]={0};
-		tabs[focus]->run(tabs[focus]->in,buffer);
-		strcpyTab(currentTab->out+currentTab->current,buffer,tabs[focus]);
-		tabs[focus]->inController('\n');
-		strcpyTab(currentTab->out+currentTab->current,"horacio:>",tabs[focus]);
-		tabs[focus]->offsetCurrent = tabs[focus]->current + 1;
-		updateRadius(currentTab, RADIUS);
-		//printString(tabs[focus]->out,tabs[focus]);
-		//printString("\n",tabs[focus]);
-		tabs[focus]->inIndex=0;
-		updateTab(currentTab);
+		printString("\n",currentTab);
+		printString(currentTab->in,currentTab);
+		printString("\n",currentTab);
+		currentTab->run(currentTab->in,currentTab->out);
+		printString(currentTab->out,currentTab);
+		printString("\n",currentTab);
+		strcpy(currentTab->out,"horacio:>");
+		printString(currentTab->out,currentTab);
+		currentTab->offsetCurrent = currentTab->current+1;
+		currentTab->inIndex=0;
 	}
 
 	return 0;
@@ -99,30 +92,18 @@ void runGenerico(char * in,char * out){
 
 
 void genericInController(int c, tabStruct * tab){
-	int width=tab->currentScreen.xf - tab->currentScreen.xi;
-	int height=tab->currentScreen.yf - tab->currentScreen.yi;
-	int lettersPerLine = width/tab->px;
-	int linesInScreen = height/(2*tab->px);
-	int lettersInThisLine =  tab->current-tab->lines[tab->currentLine%LINES_LENGTH];
 	if(c==8){
 		if(tab->inIndex>0)
 			tab->inIndex--;
-		if(tab->offsetCurrent<=tab->current){
-			tab->current--;
-			if(tab->current<=tab->lines[tab->currentLine%LINES_LENGTH]) tab->currentLine--;
-		}
-	}else if(c=='\n'){
-		tab->lines[++tab->currentLine%LINES_LENGTH] = tab->current+1;
-		if(tab->currentLine >= linesInScreen-10) tab->lineOffset++;
-	}else{
-		if(lettersInThisLine>=lettersPerLine){
-			tab->lines[++tab->currentLine%LINES_LENGTH] = tab->current+1;
-			if(tab->currentLine >= linesInScreen-10) tab->lineOffset++;
-		}
+	}
+	else{
 		tab->in[tab->inIndex++] = c;
-	} 
-		
-	if(c!=0 && c!=8)tab->out[tab->current++] = c;
+		tab->in[tab->inIndex]=0;
+	}
+
+	tab->out[0]=c;
+	tab->out[1]=0;
+	if(c!=0)printString(tab->out,tab);	
 }
 
 void inControllerTab1(int c){
