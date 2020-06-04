@@ -25,11 +25,11 @@ void keyboard_handler(){
 	//printNum(asccode[key][0]); borrar
     
 }
+
 void readKeyboard(int * buf, int count, int * amount){
 	int index;
 	for(index = 0; index<(i-base) && index<count; index++){
-		buf[index] = buffer[base];
-		base=(base+1)%BUFFER_SIZE;
+		buf[index] = buffer[(base++)%BUFFER_SIZE];
 	}
 	//i-=index;
 	*amount = index;
