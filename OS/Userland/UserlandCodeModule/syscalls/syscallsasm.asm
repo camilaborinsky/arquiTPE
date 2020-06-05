@@ -4,6 +4,7 @@ GLOBAL sys_drawBitmap
 GLOBAL sys_readKeyboard
 GLOBAL sys_setExceptionHandler
 GLOBAL sys_scroll
+GLOBAL sys_retrieveReg
 
 sys_readKeyboard:  ;char* buffer, int count,int * amount
 	push rbp
@@ -71,7 +72,14 @@ sys_scroll: ; int xi, int yi, int xf, int yf, int px
 	pop rbp
 	ret
 
-
+sys_retrieveReg:  ;registerArgs* reg
+	push rbp
+	mov rbp,rsp
+	mov rax, 7
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
 
 
 

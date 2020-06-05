@@ -35,6 +35,9 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
         case 6:
             scroll(registers[0],registers[1],registers[2],registers[3],registers[4]);
             break;
+        case 7:
+            retrieveRegs((void *)registers[0],(void *)registers[1]);
+            break;
         
     }
 

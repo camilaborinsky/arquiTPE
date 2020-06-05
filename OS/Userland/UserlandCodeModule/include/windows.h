@@ -13,7 +13,7 @@ typedef struct screen{
 typedef struct tabStruct{
 	void  (* run)(char *, char *);
 	void (* inController) (int);
-	void (* exceptionsHandler)(int,errorStruct *);
+	void (* exceptionsHandler)(errorStruct *);
 	char in[IN_LENGTH];
 	char out[OUT_LENGTH];
 	int inIndex;

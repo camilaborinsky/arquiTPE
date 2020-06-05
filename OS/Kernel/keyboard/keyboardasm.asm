@@ -1,6 +1,7 @@
 GLOBAL getKey
 GLOBAL hasKey
 GLOBAL getPort64
+
 getKey:
     in al,60h
     ret

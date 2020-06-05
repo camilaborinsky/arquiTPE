@@ -14,10 +14,10 @@ unsigned char focus = 0;
 #define resX  1024
 #define resY  768
 
-void exGenericHandler(int err, errorStruct * error);
+void exGenericHandler(errorStruct * error);
 void initTabs();
 
-tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,15,{3,3,(resX/2)-3,resY-3},0,0};
+tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,10,{3,3,(resX/2)-3,resY-3},0,0};
 tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{(resX/2)+5,3,resX-3,resY-3},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
@@ -32,8 +32,8 @@ int main() {
 	int c=0;
 	
 
-	sys_setExceptionHandler(0,divisionByZeroHandler); //esta parte siempre justo antes del while
-	sys_setExceptionHandler(6,invalidOpcodeHandler);
+	sys_setExceptionHandler(0,exGenericHandler); //esta parte siempre justo antes del while
+	sys_setExceptionHandler(6,exGenericHandler);
 	int entry=setjmp(&env)-1;
 	if(entry == -1){
 		initTabs();
@@ -121,32 +121,29 @@ void inControllerTab1(int c){
 }
 
 void inControllerTab0(int c){
-
-	genericInController(c,&tab0);
+	if((c>='0' && c<='9') || c=='+' || c=='-' || c=='/' || c=='*' || c=='(' || c==')' || c==8)
+		genericInController(c,&tab0);
 	
 }
 
 
-void divisionByZeroHandler(){
-	drawString("\n",tabs[focus]);
-	longjmp(&env,1);
-	
-}
-
-void invalidOpcodeHandler(){
-	longjmp(&env,7);
-}
-
-void exGenericHandler(int err, errorStruct * error){
-	
-	switch (err)
+void exGenericHandler(errorStruct * error){
+	switch (error->errorCode)
 	{
 	case 0:
-		divisionByZeroHandler();
+		drawString("Excepcion de division por cero \n",tabs[focus]);
 		break;
 	
 	case 6:
-		invalidOpcodeHandler();
+		drawString("Excepcion de codigo de operacion invalido \n",tabs[focus]);
 		break;
 	}
+	//inforeg(error->registers);
+	drawString("\n",tabs[focus]);
+	strcpy(tabs[focus]->out,"usr@coronavinux:>");
+	drawString(tabs[focus]->out,tabs[focus]);
+	tabs[focus]->offsetCurrent = tabs[focus]->current+1;
+	tabs[focus]->inIndex=0;
+	longjmp(&env,error->errorCode+1);
+
 }

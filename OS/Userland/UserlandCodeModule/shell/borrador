@@ -1,0 +1,12 @@
+escape 1
+f1 59 
+f2 60
+ |
+ |
+f10 68
+f11 87
+f12 88
+pausa =>25
+shiftDerecho 54,soltar 182
+ctrl 29
+flechita 

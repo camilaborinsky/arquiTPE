@@ -9,7 +9,7 @@
 static void zero_division(registerArgs * args);
 static void invalid_opcode(registerArgs * args);
 
-static void(*exceptionsHandlers[EXCEPTIONS_LENGTH])();
+static void(*exceptionsHandlers[EXCEPTIONS_LENGTH])(errorStruct *);
 
 static errorStruct buffer[ERROR_BUFFER_SIZE];
 static int errorIndex = -1;
@@ -37,7 +37,7 @@ static void zero_division(registerArgs * args) {
 	error-> opcode = *((char *)args -> rip);
 	error -> registers = *args; 
 	
-	exceptionsHandlers[0]();
+	exceptionsHandlers[0](error);
 
 }
 
@@ -47,7 +47,7 @@ static void invalid_opcode(registerArgs * args){
 	error -> errorCode = INVALID_OPCODE_EXCEPTION_ID;
 	error-> opcode = *((char *)args -> rip);
 	error -> registers = *args;
-	exceptionsHandlers[6](); 
+	exceptionsHandlers[6](error); 
 }
 
 void readErrors(errorStruct * error){
