@@ -2,6 +2,42 @@
 #include<syscalls.h>
 
 
+uint64_t atoi(char * string){
+    uint64_t num=0;
+    while(*string!=0){
+        num=num*10+(*string -'0');
+        string++;
+    } 
+    return num;
+}
+
+int intToHex(int num, char * buffer){
+    return intToBase(num,16,buffer);
+}
+
+int intToBase(int num, int base, char*buffer){
+    char stack[11];
+    int c = 0;
+    int i=0;
+    int remainder = 0;
+    if(num==0) stack[i++]='0';
+    while(num!=0){
+        remainder = num % base;
+        stack[i]=remainder>=10? remainder+'A'-10:remainder+'0';
+        num = num/base;
+        i++;
+    }
+    c=i;
+    i--;
+    while(i>=0){
+        *buffer=stack[i];
+        buffer++;
+        i--;
+    }
+    *buffer=0;
+    return c;
+}
+
 int strcpy(char * dest, char * src){
     int i =0;
     while(src[i]!=0){
@@ -46,24 +82,7 @@ int getChar(){
 
 int intToString(int num, char * buffer)
 {
-    char stack[11];
-    int c = 0;
-    int i=0;
-    if(num==0) stack[i++]='0';
-    while(num!=0){
-        stack[i]=num%10+'0';
-        num = num/10;
-        i++;
-    }
-    c=i;
-    i--;
-    while(i>=0){
-        *buffer=stack[i];
-        buffer++;
-        i--;
-    }
-    *buffer=0;
-    return c;
+    return intToBase(num,10,buffer);
 }
 
 void printNum(uint64_t num){
