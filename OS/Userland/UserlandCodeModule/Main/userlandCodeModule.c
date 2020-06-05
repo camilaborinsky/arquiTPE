@@ -14,8 +14,11 @@ unsigned char focus = 0;
 #define resX  1024
 #define resY  768
 
-tabStruct tab0 = {evaluator,inControllerTab0,0,{0},{0},0,15,{3,3,(resX/2)-3,resY-3},0,0};
-tabStruct tab1 = {shell,inControllerTab1,0,{0},{0},0,10,{(resX/2)+5,3,resX-3,resY-3},0,0};
+void exGenericHandler(int err, errorStruct * error);
+void initTabs();
+
+tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,15,{3,3,(resX/2)-3,resY-3},0,0};
+tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{(resX/2)+5,3,resX-3,resY-3},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -32,17 +35,10 @@ int main() {
 	sys_setExceptionHandler(0,divisionByZeroHandler); //esta parte siempre justo antes del while
 	sys_setExceptionHandler(6,invalidOpcodeHandler);
 	int entry=setjmp(&env)-1;
-	if(entry != -1){
-		tabs[focus]->exceptionsHandler(entry,0);
+	if(entry == -1){
+		initTabs();
 	}
 
-	//que arranquen las pantallas con username escrito
-	for(int i=0;i<NUM_TABS;i++){
-		strcpy(tabs[i]->out+tabs[i]->current,"usr@coronavinux:>");
-		drawString(tabs[i]->out,tabs[i]);
-		tabs[i]->offsetCurrent = tabs[i]->current+1;
-		tabs[i]->inIndex=0;
-	}
 	while(1){
 		while((c=getChar()) !='\n'){
 			if(c=='\t'){
@@ -88,6 +84,17 @@ int main() {
 	return 0;
 }
 
+void initTabs(){
+	//que arranquen las pantallas con username escrito
+	for(int i=0;i<NUM_TABS;i++){
+		tabs[i]->current=0;
+		strcpy(tabs[i]->out+tabs[i]->current,"usr@coronavinux:>");
+		drawString(tabs[i]->out,tabs[i]);
+		tabs[i]->offsetCurrent = tabs[i]->current+1;
+		tabs[i]->inIndex=0;
+	}
+}
+
 void runGenerico(char * in,char * out){
 	return;
 }
@@ -121,10 +128,25 @@ void inControllerTab0(int c){
 
 
 void divisionByZeroHandler(){
+	drawString("\n",tabs[focus]);
 	longjmp(&env,1);
+	
 }
 
 void invalidOpcodeHandler(){
 	longjmp(&env,7);
 }
 
+void exGenericHandler(int err, errorStruct * error){
+	
+	switch (err)
+	{
+	case 0:
+		divisionByZeroHandler();
+		break;
+	
+	case 6:
+		invalidOpcodeHandler();
+		break;
+	}
+}

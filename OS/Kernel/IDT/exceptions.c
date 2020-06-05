@@ -36,6 +36,8 @@ static void zero_division(registerArgs * args) {
 	error -> errorCode = ZERO_EXCEPTION_ID;
 	error-> opcode = *((char *)args -> rip);
 	error -> registers = *args; 
+	
+	exceptionsHandlers[0]();
 
 }
 
