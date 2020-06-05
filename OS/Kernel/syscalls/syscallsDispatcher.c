@@ -30,7 +30,7 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
             readErrors((errorStruct *)registers[0]);
             break;
         case 5:
-            setHandler(registers[0], (void *)registers[1]);
+            setExceptionHandler(registers[0], (void *)registers[1]);
             break;
         case 6:
             scroll(registers[0],registers[1],registers[2],registers[3],registers[4]);

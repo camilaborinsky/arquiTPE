@@ -29,8 +29,8 @@ int main() {
 	int c=0;
 	
 
-	sys_setHandler(0,divisionByZeroHandler); //esta parte siempre justo antes del while
-	sys_setHandler(6,invalidOpcodeHandler);
+	sys_setExceptionHandler(0,divisionByZeroHandler); //esta parte siempre justo antes del while
+	sys_setExceptionHandler(6,invalidOpcodeHandler);
 	int entry=setjmp(&env)-1;
 	if(entry != -1){
 		tabs[focus]->exceptionsHandler(entry,0);

@@ -4,9 +4,12 @@
 #define ZERO_EXCEPTION_ID 0
 #define INVALID_OPCODE_EXCEPTION_ID 6
 #define ERROR_BUFFER_SIZE 10
+#define EXCEPTIONS_LENGTH 7
 
 static void zero_division(registerArgs * args);
 static void invalid_opcode(registerArgs * args);
+
+static void(*exceptionsHandlers[EXCEPTIONS_LENGTH])();
 
 static errorStruct buffer[ERROR_BUFFER_SIZE];
 static int errorIndex = -1;
@@ -41,7 +44,8 @@ static void invalid_opcode(registerArgs * args){
 	errorStruct * error = buffer + (++errorIndex%ERROR_BUFFER_SIZE);
 	error -> errorCode = INVALID_OPCODE_EXCEPTION_ID;
 	error-> opcode = *((char *)args -> rip);
-	error -> registers = *args; 
+	error -> registers = *args;
+	exceptionsHandlers[6](); 
 }
 
 void readErrors(errorStruct * error){
@@ -52,8 +56,7 @@ void readErrors(errorStruct * error){
 	*error = buffer[errorIndex--];
 }
 
-void setHandler(int ex, void * handler){
-
-
+void setExceptionHandler(int ex, void * handler){
+	exceptionsHandlers[ex] = handler;
 
 }

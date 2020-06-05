@@ -39,7 +39,7 @@ typedef struct errorStruct{
 
 void readErrors(errorStruct * error);
 
-void setHandler(int ex, void * handler);
+void setExceptionHandler(int ex, void * handler);
 
 
 
