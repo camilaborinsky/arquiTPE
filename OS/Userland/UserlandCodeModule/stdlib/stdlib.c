@@ -1,6 +1,8 @@
 #include<stdint.h>
 #include<syscalls.h>
+#include<stdlib.h>
 
+int intToBase(int num, int base, char*buffer);
 
 uint64_t atoi(char * string){
     uint64_t num=0;
@@ -39,9 +41,10 @@ int intToBase(int num, int base, char*buffer){
 }
 
 int strcpy(char * dest, char * src){
-    int i =0;
+    unsigned char i =0;
     while(src[i]!=0){
-        dest[i] = src[i++];
+        dest[i] = src[i];
+        i++;
     }
     dest[i]=0;
     return i;
@@ -71,13 +74,13 @@ void deleteChar(char * str, char c){
 }
 
 int getChar(){
-    int character;
+    unsigned char character;
     int count = 0;
     while(count!=1){
-        sys_readKeyboard(&character,1,&count);
+        sys_readKeyboard((char *)&character,1,&count);
         hlt();
     }
-    return character;
+    return count<0?-1:(int)character;
 }
 
 int intToString(int num, char * buffer)

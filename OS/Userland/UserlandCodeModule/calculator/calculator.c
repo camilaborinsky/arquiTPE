@@ -286,7 +286,7 @@ char getPrecedence(char first, char second){
         }
     }
 
-    return mat[first][second];
+    return mat[(unsigned char)first][(unsigned char)second];
 }
 
 char isBracket(char tok){

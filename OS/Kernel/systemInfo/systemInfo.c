@@ -1,5 +1,9 @@
 #include <systemInfo.h>
 
+unsigned char getHour();
+unsigned char getMin();
+unsigned char getSecs();
+
 void cpuTemp(double * res){
 	
 }

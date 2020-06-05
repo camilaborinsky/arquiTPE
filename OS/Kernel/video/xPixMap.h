@@ -1,6 +1,6 @@
-
 #ifndef X_PIX_MAP_H
 #define X_PIX_MAP_H
+
 #include<stdint.h>
 
 
@@ -40,4 +40,4 @@ void loadPixelMap(infoPixelMap * info, char * pixmap[]);
 
 colorStruct getColor(int x, int y, infoPixelMap * pixelMap);
 
-#endif;
+#endif

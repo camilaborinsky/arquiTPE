@@ -143,7 +143,7 @@ void exGenericHandler(errorStruct * error){
 
 	char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","rdi",\
                             "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
-	uint64_t * registers =&(error->registers);
+	uint64_t * registers =(uint64_t *)&(error->registers);
 	drawString("\n",tabs[focus]);
 	int index=0;
     index=strcpy(tabs[focus]->out, "registros \n");

@@ -1,8 +1,8 @@
 #include "xPixMap.h"
 
 void split(char * string, char buffer[4][5], char splitter){
-    char index = 0;
-    char actual=0;
+    unsigned char index = 0;
+    unsigned char actual=0;
     while(*string!=0){
         if(*string==splitter){
             buffer[actual][index]=0;
@@ -35,8 +35,6 @@ unsigned char hexToInt(char * hex ){
 }
 
 void stringToColor(char * string, colorStruct * color){
-    unsigned char * colors = color;
-    unsigned char aux=0;
 
     color->red = hexToInt(string);
     color->green = hexToInt(string+2);

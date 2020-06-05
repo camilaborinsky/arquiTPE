@@ -20,5 +20,5 @@ void int_20() {
 	timer_handler();
 }
 void int_21(uint64_t * registers){
-	keyboard_handler(registers);
+	keyboard_handler((registerArgs * )registers);
 }

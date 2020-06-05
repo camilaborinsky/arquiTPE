@@ -15,7 +15,7 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
     switch (id)
     {
         case 0:
-            readKeyboard((char *)registers[0], registers[1],registers[2]);
+            readKeyboard((char *)registers[0], registers[1],(int *)registers[2]);
             break;
         case 1:
             drawCharacter(registers[0],registers[1],registers[2],registers[3]);

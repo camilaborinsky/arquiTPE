@@ -17,7 +17,7 @@ static int errorIndex = -1;
 
 //exception es el codigo que le corresponde al error
 //args es una serie de parametros. args = {r15,...,r8,rsi,rdi,rbp,rdx,rcx,rbx,rax,rip,cs,flags,rsp,ss}
-void exceptionDispatcher(int exception,uint64_t * args) {
+void exceptionDispatcher(int exception,registerArgs * args) {
 	switch(exception){
 		case ZERO_EXCEPTION_ID:
 			zero_division(args);

@@ -1,6 +1,6 @@
 #ifndef PRINTMEM_H
 #define PRINTMEM_H
 
-void printmem(char * pointer,char * out);
+void printmem(char * out, int argc, char * args[]);
 
 #endif

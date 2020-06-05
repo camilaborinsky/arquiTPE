@@ -9,7 +9,6 @@ void drawString( char *string, tabStruct *tab)
     int px = tab->px;
     int lettersPerLine = width / px; //cambiar a syscall getResolution
     int totalLines = height/(2*px);
-    tab->current;
     for (int i = 0; string[i] != 0; i++){
         if (string[i] == 8){
             if(tab->current >= tab->offsetCurrent){

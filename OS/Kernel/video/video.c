@@ -34,7 +34,7 @@ struct vbe_mode_info_structure{
     uint8_t reserved_position;
     uint8_t direct_color_attributes;
 
-    uint32_t framebuffer;		// physical address of the linear frame buffer; write here to draw to the screen
+    uint64_t framebuffer;		// physical address of the linear frame buffer; write here to draw to the screen
     uint32_t off_screen_mem_off;
     uint16_t off_screen_mem_size;	// size of memory in the framebuffer but not being displayed on the screen
     uint8_t reserved1[206];
@@ -43,10 +43,10 @@ struct vbe_mode_info_structure{
 void setPixel(int x, int y, colorStruct c);
 char getBit(unsigned char index,int x, int y);
 
-struct vbe_mode_info_structure * screen_info = 0x5C00;
+struct vbe_mode_info_structure * screen_info = (struct vbe_mode_info_structure * )0x5C00;
 
 void segmentRowCopy(int dest, int src, int start, int end){
-    char * framebuffer =screen_info->framebuffer;
+    char * framebuffer=(char *)screen_info->framebuffer;
 
     int absSrc;
     int absDest;
@@ -96,7 +96,7 @@ void drawBitmap(int x, int y, char * pixmap[]){ // max 16 colors support
 }
 
 void setPixel(int x, int y, colorStruct c){
-    char * framebuffer =screen_info->framebuffer;
+    char * framebuffer =(char *)screen_info->framebuffer;
     int absolute=3*(x+y*screen_info->width);
     char * pixel = framebuffer+absolute;
     pixel[0]=c.blue;
