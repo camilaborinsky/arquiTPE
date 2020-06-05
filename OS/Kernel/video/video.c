@@ -69,6 +69,10 @@ void scroll(int xi, int yi, int xf, int yf, int px){
     for(int i=yi+px; i<= yf;i++){
         segmentRowCopy(i-px,i,xi,xf);
     }
+    for(int i=yf-px; i<= yf;i++){
+        segmentRowCopy(i,yf,xi,xf); //rellena la ultima parte con pixeles de la ultima linea
+    }
+    
 }
 
 void drawCharacter(int x, int y, int px, char letter){
