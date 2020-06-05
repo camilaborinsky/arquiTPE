@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include "printmem.h"
 #include "inforeg.h"
+#include "sysInfo.h"
 char * messages[] = {"Command not found"};
 char * commands[] = {"help","inforeg","printmem","cputemp", "cpuid", "localtime", "divisionbyzero", "invalidopcode",0};
-void  (* run[])(char *,int,char * * ) = {help, inforeg, printmem, 0, 0, 0, divisionbyzero, invalidopcode};
+void  (* run[])(char *,int,char * * ) = {help, inforeg, printmem, cputemp,cpuid, localtime, divisionbyzero, invalidopcode};
 
 void shell(char * in, char * out){
     char * args[ARGS_LENGTH];

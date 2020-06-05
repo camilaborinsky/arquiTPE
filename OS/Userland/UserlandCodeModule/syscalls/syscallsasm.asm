@@ -5,6 +5,8 @@ GLOBAL sys_readKeyboard
 GLOBAL sys_setExceptionHandler
 GLOBAL sys_scroll
 GLOBAL sys_retrieveReg
+GLOBAL sys_cpuTemp
+GLOBAL sys_localtime
 
 sys_readKeyboard:  ;char* buffer, int count,int * amount
 	push rbp
@@ -76,6 +78,15 @@ sys_retrieveReg:  ;registerArgs* reg
 	push rbp
 	mov rbp,rsp
 	mov rax, 7
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
+
+sys_localtime:  ;char * reg
+	push rbp
+	mov rbp,rsp
+	mov rax, 8
 	int 80h
 	mov rsp, rbp
 	pop rbp

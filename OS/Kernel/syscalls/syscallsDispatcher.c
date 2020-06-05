@@ -38,6 +38,9 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
         case 7:
             retrieveRegs((void *)registers[0],(void *)registers[1]);
             break;
+        case 8:
+            localtime((void *)registers[0]);
+            break;
         
     }
 

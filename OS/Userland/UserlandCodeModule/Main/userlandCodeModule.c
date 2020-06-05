@@ -68,9 +68,9 @@ int main() {
 		}
 
 		tabStruct * currentTab = tabs[focus];
-		drawString("\n input:",currentTab);
+		//drawString("\n input:",currentTab);
 		//drawString(currentTab->in,currentTab);
-		//drawString("\n",currentTab);
+		drawString("\n",currentTab);
 		currentTab->run(currentTab->in,currentTab->out);
 		drawString(currentTab->out,currentTab);
 		drawString("\n",currentTab);
