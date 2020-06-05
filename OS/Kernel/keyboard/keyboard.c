@@ -23,12 +23,13 @@ static char asccode[][2] = { {0,0}, {0,0}, {'1', '!'}, {'2', '@'}, {'3', '#'},{'
 
 void keyboard_handler(registerArgs * regs){
     unsigned char key = getKey();
-	if(key==42) shiftLStatus=1;
-	else if(key==54) shiftRStatus=1;
-	else if (key==182)shiftRStatus=1;
-	else if(key==170) shiftLStatus=0;
-	else if(key==58) blockMayus=1-blockMayus;
-	else if(key == 29){
+	if(key==SHIFT_L) shiftLStatus=1;
+	else if(key==SHIFT_R) shiftRStatus=1;
+	else if (key==SHIFT_R+RELEASED)shiftRStatus=0;
+	else if(key==SHIFT_L+RELEASED) shiftLStatus=0;
+	else if(key==BLOCK_MAYUS) blockMayus=1-blockMayus;
+	else if(key==ALT_L) 1; //nada que hacer en ALT Left
+	else if(key == CTRL_L){
 		saveReg=1;
 		cpyRegs(&registers,regs); // con ctrl izq
 	}else if(key<58)buffer[(i++)%BUFFER_SIZE]= asccode[key][( shiftRStatus | shiftLStatus | blockMayus) - ((shiftLStatus | shiftRStatus) & blockMayus)];

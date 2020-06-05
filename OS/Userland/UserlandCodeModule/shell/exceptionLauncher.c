@@ -6,7 +6,6 @@ void divisionbyzero(){
 }
 
 void invalidopcode(){
-    char buffer[]="esto no es un opcode";
-    void  (* func)(void)=buffer;
+    void  (* func)(void)="esto no es un opcode";
     func();
 }

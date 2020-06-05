@@ -25,11 +25,6 @@ EXTERN syscallsDispatcher
 SECTION .text
 
 %macro pushState 0 
-	
-	add rsp, 4*8
-	mov [rsp-5*8],rsp
-	sub rsp,5*8
-
 	push rax
 	push rbx
 	push rcx
@@ -63,11 +58,14 @@ SECTION .text
 	pop rcx
 	pop rbx
 	pop rax
-	add rsp,8
 
 %endmacro
 
 %macro irqHandlerMaster 1
+	add rsp, 3*8
+	mov [rsp-4*8],rsp
+	sub rsp,4*8
+
 	pushState
 
 	mov rdi, %1 ; pasaje de parametro
@@ -79,12 +77,20 @@ SECTION .text
 	out 20h, al
 
 	popState
+
+	add rsp,8
 	iretq
 %endmacro
 
 
 ;potential error stack struct ==== error,rip,cs,flags
 %macro exceptionHandler 1
+	;add rsp,8
+
+	add rsp, 3*8
+	mov [rsp-4*8],rsp
+	sub rsp,4*8
+
 	pushState
 	mov rbp,rsp
 	mov rsi,rbp
@@ -92,6 +98,8 @@ SECTION .text
 	call exceptionDispatcher
 	mov rsp,rbp
 	popState
+
+	add rsp,8
 	iretq
 %endmacro
 
@@ -153,6 +161,11 @@ _irq05Handler:
 
 
 _syscallsHandler:;rax id, 
+	
+	add rsp, 3*8
+	mov [rsp-4*8],rsp
+	sub rsp,4*8
+
 	pushState
 	mov rbp,rsp
 	push r9
@@ -166,6 +179,8 @@ _syscallsHandler:;rax id,
 	call syscallsDispatcher
 	mov rsp,rbp
 	popState
+
+	add rsp,8
 	iretq
 
 ;Zero Division Exception

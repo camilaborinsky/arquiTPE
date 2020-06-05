@@ -68,7 +68,7 @@ int main() {
 		}
 
 		tabStruct * currentTab = tabs[focus];
-		drawString("\n",currentTab);
+		drawString("\n input:",currentTab);
 		//drawString(currentTab->in,currentTab);
 		//drawString("\n",currentTab);
 		currentTab->run(currentTab->in,currentTab->out);
@@ -128,6 +128,7 @@ void inControllerTab0(int c){
 
 
 void exGenericHandler(errorStruct * error){
+	
 	switch (error->errorCode)
 	{
 	case 0:
@@ -139,8 +140,23 @@ void exGenericHandler(errorStruct * error){
 		break;
 	}
 	//inforeg(error->registers);
+
+	char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","rdi",\
+                            "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
+	uint64_t * registers =&(error->registers);
 	drawString("\n",tabs[focus]);
-	strcpy(tabs[focus]->out,"usr@coronavinux:>");
+	int index=0;
+    index=strcpy(tabs[focus]->out, "registros \n");
+    
+    for(int i = 0 ; i < 19 ; i++){
+
+        index+=strcpy(tabs[focus]->out+index, registersNames[i]);
+        index+=strcpy(tabs[focus]->out+index,"    ");
+        index+=intToHex(registers[i], tabs[focus]->out+index);
+        index+=strcpy(tabs[focus]->out+index,"\n");
+    
+    }	
+	strcpy(tabs[focus]->out+index,"usr@coronavinux:>");
 	drawString(tabs[focus]->out,tabs[focus]);
 	tabs[focus]->offsetCurrent = tabs[focus]->current+1;
 	tabs[focus]->inIndex=0;
