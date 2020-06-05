@@ -24,7 +24,12 @@ EXTERN syscallsDispatcher
 
 SECTION .text
 
-%macro pushState 0
+%macro pushState 0 
+	
+	add rsp, 4*8
+	mov [rsp-5*8],rsp
+	sub rsp,5*8
+
 	push rax
 	push rbx
 	push rcx
@@ -58,6 +63,8 @@ SECTION .text
 	pop rcx
 	pop rbx
 	pop rax
+	add rsp,8
+
 %endmacro
 
 %macro irqHandlerMaster 1
@@ -76,7 +83,7 @@ SECTION .text
 %endmacro
 
 
-;potential error stack struct ==== rip,cs,flags,rsp,ss
+;potential error stack struct ==== error,rip,cs,flags
 %macro exceptionHandler 1
 	pushState
 	mov rbp,rsp

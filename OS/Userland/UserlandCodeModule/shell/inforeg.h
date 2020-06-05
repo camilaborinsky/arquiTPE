@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define REGISTERS 20
 
+#define REGISTERS 19
 typedef struct registerArgs{
 	uint64_t r15;
 	uint64_t r14;
@@ -21,11 +21,10 @@ typedef struct registerArgs{
 	uint64_t rcx;
 	uint64_t rbx;
 	uint64_t rax;
+	uint64_t rsp;
 	uint64_t rip;
 	uint64_t cs;
 	uint64_t flags;
-	uint64_t rsp;
-	uint64_t ss;
 }registerArgs;
 
 void inforeg(char * out, int argc, char *  args[]);

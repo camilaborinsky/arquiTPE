@@ -13,4 +13,5 @@ void printmem(char * out, int argc, char * args[]){
         out += strcpy(out,buffer);
         *out++=' ';
     }
+    *out=0;
 }

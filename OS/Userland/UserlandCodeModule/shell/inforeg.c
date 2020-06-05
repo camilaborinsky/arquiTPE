@@ -4,7 +4,7 @@
 #include <syscalls.h>
 
 char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","rdi",\
-                            "rbp","rdx","rcx","rbx","rax","rip","cs","flags","rsp","ss"};
+                            "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
 
 void inforeg(char * out, int argc, char * args[]){
     char * buffer;
