@@ -2,6 +2,18 @@
 #include <stdlib.h>
 #include <syscalls.h>
 
+void eraseTab(tabStruct * tab){
+    rect eraser ={
+					tab->currentScreen.xi,
+					tab->currentScreen.yi,
+					tab->currentScreen.xf,
+					tab->currentScreen.yf,
+					1,
+					0,
+					{0,0,0}};
+    sys_drawRect(&eraser);
+}
+
 void drawString( char *string, tabStruct *tab)
 {   
     int height = tab->currentScreen.yf - tab->currentScreen.yi;

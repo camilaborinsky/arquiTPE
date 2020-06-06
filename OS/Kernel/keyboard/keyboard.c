@@ -25,6 +25,8 @@ void keyboard_handler(registerArgs * regs){
 	else if(key==ALT_L || key == CTRL_L){
 		saveReg=1;
 		cpyRegs(&registers,regs); // con ctrl izq
+	}else if(key == 59){ //F1
+		buffer[(i++)%BUFFER_SIZE]=208;
 	}else if(key==224){
 		key=getKey();
 		switch (key){

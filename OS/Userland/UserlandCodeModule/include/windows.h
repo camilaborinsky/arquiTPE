@@ -43,6 +43,7 @@ typedef struct tabStruct{
 
 
 void drawString(char *, tabStruct * );
+void eraseTab(tabStruct * );
 int strcpyTab(char * src, char * dest, tabStruct * tab);
 
 #endif

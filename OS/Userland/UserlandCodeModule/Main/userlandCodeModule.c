@@ -8,15 +8,19 @@
 #include "defs.h"
 #include <calculator.h>
 #include <shell.h>
+#include "itbaLogo.xpm"
 
 #define RADIUS 1
 unsigned char focus = 0;
 #define resX  1024
 #define resY  768
 #define BORDER 3
+#define MOVE 50
+#define SCALE 30
 
 void exGenericHandler(errorStruct * error);
 void initTabs();
+void initTab(tabStruct * tab);
 
 tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,10,{10,10,resX/2-10,resY/2-10},0,0};
 tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{resX/2-10,resY/2-10,resX-10,resY-10},0,0};
@@ -81,7 +85,8 @@ void superpose(tabStruct * tab1, tabStruct * tab2, moves * m){
 
 int main() {
 	setupBorders();
-		
+	sys_drawBitmap(600,0,itbaLogo_xpm);
+			
 	int c=0;
 	
 
@@ -101,47 +106,45 @@ int main() {
 				tab_borders[focus]->c=colorOrange;
 				sys_drawRect(tab_borders[focus]);
 
+			}else if(c==208){
+				eraseTab(tabs[focus]);
+				initTab(tabs[focus]);			
 			}else if(c>=200 && c<=207){
-				rect eraser ={
-					tabs[focus]->currentScreen.xi,
-					tabs[focus]->currentScreen.yi,
-					tabs[focus]->currentScreen.xf,
-					tabs[focus]->currentScreen.yf,
-					1,
-					0,
-					colorBlack};
-				sys_drawRect(&eraser);
+				sys_drawBitmap(600,0,itbaLogo_xpm);
+				eraseTab(tabs[focus]);
 				tab_borders[focus]->c=colorBlack;
 				sys_drawRect(tab_borders[focus]);
 
 				switch (c){
 					case 200:  // para arriba
-						tabs[focus]->currentScreen.yi-=10;
-						tabs[focus]->currentScreen.yf-=10;
+						tabs[focus]->currentScreen.yi-=MOVE;
+						tabs[focus]->currentScreen.yf-=MOVE;
 						break;
 					case 201: // para abajo
-						tabs[focus]->currentScreen.yi+=10;
-						tabs[focus]->currentScreen.yf+=10;
+						tabs[focus]->currentScreen.yi+=MOVE;
+						tabs[focus]->currentScreen.yf+=MOVE;
 					break;
 					case 202: // para izquierda
-						tabs[focus]->currentScreen.xi-=10;
-						tabs[focus]->currentScreen.xf-=10;
+						tabs[focus]->currentScreen.xi-=MOVE;
+						tabs[focus]->currentScreen.xf-=MOVE;
 					break;
 					case 203: // para derecha
-						tabs[focus]->currentScreen.xi+=10;
-						tabs[focus]->currentScreen.xf+=10;
+						tabs[focus]->currentScreen.xi+=MOVE;
+						tabs[focus]->currentScreen.xf+=MOVE;
 					break;
 				case 204:  // agrandar vertical
-					tabs[focus]->currentScreen.yi-=10;
+					tabs[focus]->currentScreen.yi-=SCALE;
 					break;
 				case 205: //  achicar vertical
-					tabs[focus]->currentScreen.yi+=10;
+					if(tabs[focus]->currentScreen.yi+4* SCALE < tabs[focus]->currentScreen.yf)
+						tabs[focus]->currentScreen.yi+=SCALE;
 					break;
 				case 206: // agrandar horizontal
-					tabs[focus]->currentScreen.xi-=10;
+					tabs[focus]->currentScreen.xi-=SCALE;
 					break;
 				case 207: // achicar horizontal
-					tabs[focus]->currentScreen.xi+=10;
+					if(tabs[focus]->currentScreen.xi+4*SCALE < tabs[focus]->currentScreen.xf)
+						tabs[focus]->currentScreen.xi+=SCALE;
 					break;
 				
 				}
@@ -173,16 +176,23 @@ int main() {
 }
 
 void initTabs(){
-	//que arranquen las pantallas con username escrito
 	for(int i=0;i<NUM_TABS;i++){
-		tabs[i]->current=0;
-		strcpy(tabs[i]->out+tabs[i]->current,"usr@coronavinux:>");
-		drawString(tabs[i]->out,tabs[i]);
-		tabs[i]->offsetCurrent = tabs[i]->current+1;
-		tabs[i]->inIndex=0;
+		initTab(tabs[i]);
 
 	}
 }
+
+void initTab(tabStruct * tab){
+	//que arranquen las pantallas con username escrito
+	tab->current=0;
+	strcpy(tab->out+tab->current,"usr@coronavinux:>");
+	drawString(tab->out,tab);
+	tab->offsetCurrent = tab->current+1;
+	tab->inIndex=0;
+
+	
+}
+
 
 void runGenerico(char * in,char * out){
 	return;
