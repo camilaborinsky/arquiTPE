@@ -203,7 +203,7 @@ void genericInController(int c, tabStruct * tab){
 	
 	if(c==128){
 		while(tab->inIndex>0){
-			genericInController(8,&tab0);
+			genericInController(8,tab);
 		}
 	}
 	else{

@@ -45,14 +45,13 @@ int doubleToString(double value, char * buffer){
         value=-value;
         buffer[c++]='-';
     }
-	int m=value;
+	long m=value;
+    if(m<0) m=-m;
 	double p = value-m;
-	int r=(int)(p*precision+0.00001f);
-	
+	long r=(int)(p*precision+0.00001f);
+    if(r<0)r=-r;
 	c += intToString(m,buffer+c);
 	buffer[c++]='.';
-	
-	
 	int aux=r;
 	while(r!=0 && 10*aux/precision<1){
 		buffer[c++]='0';
