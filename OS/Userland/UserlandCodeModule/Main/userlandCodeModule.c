@@ -18,13 +18,13 @@ unsigned char focus = 0;
 void exGenericHandler(errorStruct * error);
 void initTabs();
 
-tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,10,{3,3,(resX/2)-3,resY-3},0,0};
-tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{(resX/2)+5,3,resX-3,resY-3},0,0};
+tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,10,{10,10,resX/2-10,resY/2-10},0,0};
+tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{resX/2-10,resY/2-10,resX-10,resY-10},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
 
-colorStruct colorBlack={0,0,0},colorOrange={255,125,0};
+colorStruct colorBlack={200,200,200},colorOrange={255,125,0};
 rect tab0_border;
 rect tab1_border;
 registerEnv env;
@@ -133,18 +133,28 @@ void runGenerico(char * in,char * out){
 
 
 void genericInController(int c, tabStruct * tab){
-	if(c==8){
-		if(tab->inIndex>0)
-			tab->inIndex--;
+	
+	if(c==128){
+		while(tab->inIndex>0){
+			genericInController(8,&tab0);
+		}
 	}
 	else{
-		tab->in[tab->inIndex++] = c;
-		tab->in[tab->inIndex]=0;
-	}
+		if(c==8){
+			if(tab->inIndex>0){
+				tab->inIndex--;
+				tab->in[tab->inIndex]=0;
+			}
+		}
+		else{
+			tab->in[tab->inIndex++] = c;
+			tab->in[tab->inIndex]=0;
+		}
 
-	tab->out[0]=c;
-	tab->out[1]=0;
-	if(c!=0)drawString(tab->out,tab);	
+		tab->out[0]=c;
+		tab->out[1]=0;
+		if(c!=0)drawString(tab->out,tab);	
+	}
 }
 
 void inControllerTab1(int c){
@@ -153,7 +163,8 @@ void inControllerTab1(int c){
 }
 
 void inControllerTab0(int c){
-	if((c>='0' && c<='9') || c=='+' || c=='-' || c=='/' || c=='*' || c=='(' || c==')' || c==8)
+
+	if((c>='0' && c<='9') || c=='+' || c=='-' || c=='/' || c=='*' || c=='(' || c==')'|| c==8 || c==128)
 		genericInController(c,&tab0);
 	
 }
