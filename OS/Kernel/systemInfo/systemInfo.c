@@ -4,10 +4,6 @@ unsigned char getHour();
 unsigned char getMin();
 unsigned char getSecs();
 
-void cpuTemp(double * res){
-	
-}
-
 void localtime(char * buffer){
     char hour,min,secs;
     hour = getHour();

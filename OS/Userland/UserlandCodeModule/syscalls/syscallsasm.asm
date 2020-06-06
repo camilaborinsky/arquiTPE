@@ -5,8 +5,9 @@ GLOBAL sys_readKeyboard
 GLOBAL sys_setExceptionHandler
 GLOBAL sys_scroll
 GLOBAL sys_retrieveReg
-GLOBAL sys_cpuTemp
+GLOBAL sys_cputemp
 GLOBAL sys_localtime
+GLOBAL sys_drawRect
 
 sys_readKeyboard:  ;char* buffer, int count,int * amount
 	push rbp
@@ -38,7 +39,7 @@ sys_drawBitmap:  ;int x, int y, char * bitmap
 	ret	
 
 
-sys_cpuTemp:  ;double * temp
+sys_cputemp:  ;double * temp
 	push rbp
 	mov rbp, rsp
 	mov rax, 3
@@ -92,5 +93,12 @@ sys_localtime:  ;char * reg
 	pop rbp
 	ret
 
-
+sys_drawRect:  ;rect * rectangle
+	push rbp
+	mov rbp,rsp
+	mov rax, 9
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
 

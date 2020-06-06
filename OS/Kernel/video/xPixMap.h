@@ -2,14 +2,7 @@
 #define X_PIX_MAP_H
 
 #include<stdint.h>
-
-
-typedef struct colorStruct{
-    uint8_t red;
-    uint8_t green;
-    uint8_t blue;
-
-} colorStruct;
+#include<video.h>
 
 
 //https://es.wikipedia.org/wiki/X_PixMap#XPM

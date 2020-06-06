@@ -12,8 +12,7 @@
 
 
 void syscallsDispatcher (uint64_t id, uint64_t * registers){
-    switch (id)
-    {
+    switch (id){
         case 0:
             readKeyboard((char *)registers[0], registers[1],(int *)registers[2]);
             break;
@@ -41,19 +40,10 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
         case 8:
             localtime((void *)registers[0]);
             break;
+        case 9:
+            drawRect((void *)registers[0]);
+            break;
         
     }
 
 }
-//writeChar(buffer[i],0,0,0.25f);
-
-/*void write(unsigned int fd, const char * buf, uint64_t count){
-     
-     char * dst = getBufferPointer(fd);
-     for(int i=0;i<count;i++)
-            dst[i]=buf[i];
-     
-
-        
-     
-}*/

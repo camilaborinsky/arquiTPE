@@ -17,59 +17,8 @@ char mat[OPERATORS - 1][OPERATORS] = {
     {1, 1, 1, 1, 1, 0, 0, 1},
     {0, 0, 0, 0, 0, 0, 0, 0}};
 
-int doubleToString(double value, char * buffer){
-	int precision=1000000000;
-    int c=0;
-    if(value<0){
-        value=-value;
-        buffer[c++]='-';
-    }
-	int m=value;
-	double p = value-m;
-	int r=(int)(p*precision+0.00001f);
-	
-	c += intToString(m,buffer+c);
-	buffer[c++]='.';
-	
-	
-	int aux=r;
-	while(r!=0 && 10*aux/precision<1){
-		buffer[c++]='0';
-		aux*=10;
-	}
-	
-	
-	
-	
-	intToString(r,buffer+c++);
-    buffer[c]=0;
-    return c;
-}
 
-double stringToDouble(char *init, char *end){
-    double res = 0;
-    char comma = 0;
-    double exp = 1.0f / 10;
-    while (init < end)
-    {
 
-        if (*init == '.' || *init == ',')
-        {
-            comma = 1;
-        }
-        else if (comma)
-        {
-            res += (*init - '0') * exp;
-            exp = exp / 10;
-        }
-        else
-        {
-            res = res * 10 + (*init - '0');
-        }
-        init++;
-    }
-    return res;
-}
 
 
 char * error_msg[]={"Error de formato en la expresion: 2 signos de puntuacion en un mismo numero",

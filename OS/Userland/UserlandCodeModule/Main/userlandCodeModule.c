@@ -13,6 +13,7 @@
 unsigned char focus = 0;
 #define resX  1024
 #define resY  768
+#define BORDER 3
 
 void exGenericHandler(errorStruct * error);
 void initTabs();
@@ -22,13 +23,36 @@ tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{(resX/2)
 
 tabStruct * tabs[]={&tab0,&tab1};
 
+
+colorStruct colorBlack={0,0,0},colorOrange={255,125,0};
+rect tab0_border;
+rect tab1_border;
 registerEnv env;
 int main() {
+	tab0_border.xi = tab0.currentScreen.xi-3;
+	tab0_border.xf = tab0.currentScreen.xf+3;
+	tab0_border.yi = tab0.currentScreen.yi-3;
+	tab0_border.yf = tab0.currentScreen.yf+5;
+	tab0_border.fill=0;
+	tab0_border.border=3;
+	tab0_border.c = colorOrange;
 
-	sys_drawBitmap(497,0,linea_vertical_color_xpm);
-	sys_drawBitmap(0,0,linea_vertical_color_xpm);
-	sys_drawBitmap(0,0,linea_horizontal_color_xmp);
-	sys_drawBitmap(0,1000,linea_horizontal_color_xmp);
+	
+
+	tab1_border.xi = tab1.currentScreen.xi-3;
+	tab1_border.xf = tab1.currentScreen.xf+3;
+	tab1_border.yi = tab1.currentScreen.yi-3;
+	tab1_border.yf = tab1.currentScreen.yf+5;
+	tab1_border.fill=0;
+	tab1_border.border=3;
+	
+
+	// sys_drawBitmap(497,0,linea_vertical_color_xpm);
+	// sys_drawBitmap(0,0,linea_vertical_color_xpm);
+	// sys_drawBitmap(0,0,linea_horizontal_color_xmp);
+	// sys_drawBitmap(0,1000,linea_horizontal_color_xmp);
+	
+	sys_drawRect(&tab0_border);
 	int c=0;
 	
 
@@ -44,23 +68,31 @@ int main() {
 			if(c=='\t'){
 				focus = (focus+1)%NUM_TABS;
 				if(focus ==0){
-					sys_drawBitmap((resX/2)-3,0,linea_vertical_color_xpm);
-					sys_drawBitmap(resX/2,0,linea_vertical_negra_xpm);
-					sys_drawBitmap(0,0,linea_vertical_color_xpm);
-					sys_drawBitmap(resX,0,linea_vertical_negra_xpm);
-					sys_drawBitmap(0,0,linea_horizontal_color_xmp);
-					sys_drawBitmap(0,resY,linea_horizontal_color_xmp);
-					sys_drawBitmap(resX/2,0,linea_horizontal_negra_xmp);
-					sys_drawBitmap((resX/2)-3,resY,linea_horizontal_negra_xmp);
+					tab1_border.c=colorBlack;
+					sys_drawRect(&tab1_border);
+					tab0_border.c=colorOrange;
+					sys_drawRect(&tab0_border);
+					// sys_drawBitmap((resX/2)-3,0,linea_vertical_color_xpm);
+					// sys_drawBitmap(resX/2,0,linea_vertical_negra_xpm);
+					// sys_drawBitmap(0,0,linea_vertical_color_xpm);
+					// sys_drawBitmap(resX,0,linea_vertical_negra_xpm);
+					// sys_drawBitmap(0,0,linea_horizontal_color_xmp);
+					// sys_drawBitmap(0,resY,linea_horizontal_color_xmp);
+					// sys_drawBitmap(resX/2,0,linea_horizontal_negra_xmp);
+					// sys_drawBitmap((resX/2)-3,resY,linea_horizontal_negra_xmp);
 				}else{//estamos en la pantalla de la derecha
-					sys_drawBitmap(497,0,linea_vertical_negra_xpm);
-					sys_drawBitmap(500,0,linea_vertical_color_xpm);
-					sys_drawBitmap(0,0,linea_vertical_negra_xpm);
-					sys_drawBitmap(1000,0,linea_vertical_color_xpm);
-					sys_drawBitmap(0,0,linea_horizontal_negra_xmp);
-					sys_drawBitmap(0,1000,linea_horizontal_negra_xmp);
-					sys_drawBitmap(resX/2,0,linea_horizontal_color_xmp);
-					sys_drawBitmap((resX/2)-3,1000,linea_horizontal_color_xmp);
+					tab0_border.c=colorBlack;
+					sys_drawRect(&tab0_border);
+					tab1_border.c=colorOrange;
+					sys_drawRect(&tab1_border);
+					// sys_drawBitmap(497,0,linea_vertical_negra_xpm);
+					// sys_drawBitmap(500,0,linea_vertical_color_xpm);
+					// sys_drawBitmap(0,0,linea_vertical_negra_xpm);
+					// sys_drawBitmap(1000,0,linea_vertical_color_xpm);
+					// sys_drawBitmap(0,0,linea_horizontal_negra_xmp);
+					// sys_drawBitmap(0,1000,linea_horizontal_negra_xmp);
+					// sys_drawBitmap(resX/2,0,linea_horizontal_color_xmp);
+					// sys_drawBitmap((resX/2)-3,1000,linea_horizontal_color_xmp);
 				}
 			}else{
 				tabs[focus]->inController(c);

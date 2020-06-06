@@ -39,13 +39,6 @@ void stringToColor(char * string, colorStruct * color){
     color->red = hexToInt(string);
     color->green = hexToInt(string+2);
     color->blue = hexToInt(string+4);
-
-    // for(int i=0;i<6;i++){
-    //     if(string[i] >= 'A') aux=string[i]-'A'+10;
-    //     else aux=string[i] - '0';
-    //     if(i%2==0)colors[i%2]=aux<<4;
-    //     else colors[i%2]=aux;
-    // }
 }
 
 

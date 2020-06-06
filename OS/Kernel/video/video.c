@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "fonts.h"
 #include "xPixMap.h"
+#include <video.h>
 
 struct vbe_mode_info_structure{
     uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -111,4 +112,53 @@ char getBit(unsigned char index,int x, int y){
   	int bit = absolute%8;
   	return (bitmap[index-OFFSET][pos]>>(bit))&0x01;	
 }
+void drawLine(int xi,int yi,int xf,int yf,colorStruct c){
+    if(xi==xf){
+        for(int i = yi ; i < yf ; i++){
+            setPixel(xi,i,c);
+        }
+        return;
+    }
+    int m = (yf-yi)/(xf-xi);
+    int b = yf - m*xf;
+    for(int i = xi ; i < xf ; i++){
+          setPixel(i,m*i+b,c);  
+    }
+}
+
+void drawRect(rect * rectangle){
+    
+    if(rectangle->fill){
+        for(int j = rectangle->yi;j<rectangle->yf;j++){
+            for(int i=rectangle->xi;i<rectangle-> xf;i++){
+                drawLine(rectangle->xi,rectangle->yi,rectangle->xf,rectangle->yf,rectangle->c);
+            }
+        }
+        return;
+    }
+    
+    // borde vertical izquierdo
+    for(int i=rectangle->xi;i<rectangle->xi+rectangle->border;i++){
+        drawLine(i,rectangle->yi,i,rectangle->yf,rectangle->c);
+    }
+
+    //borde vertical derecho
+    for(int i=rectangle->xf-rectangle->border;i<rectangle->xf;i++){
+        drawLine(i,rectangle->yi,i,rectangle->yf,rectangle->c);
+    }
+
+    //borde horizontal superior
+    for(int i=rectangle->yi;i<rectangle->yi+rectangle->border;i++){
+        drawLine(rectangle->xi,i,rectangle->xf,i,rectangle->c);
+    }
+
+    //borde horizontal inferior
+    for(int i=rectangle->yf-rectangle->border;i<rectangle->yf;i++){
+        drawLine(rectangle->xi,i,rectangle->xf,i,rectangle->c);
+    }
+}
+
+
+
+
 

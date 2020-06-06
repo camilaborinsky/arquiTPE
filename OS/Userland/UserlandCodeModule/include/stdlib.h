@@ -14,5 +14,8 @@ int intToBase(int num, int base, char*buffer);
 int intToString(int num, char * buffer);
 int strcpy(char * dest, char * source);
 int strcmp(char * str1, char * str2);
+int doubleToString(double value, char * buffer);
+double stringToDouble(char *init, char *end);
+
 
 #endif

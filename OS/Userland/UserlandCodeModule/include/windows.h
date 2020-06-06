@@ -6,6 +6,24 @@
 #define LINES_LENGTH 50
 #define IN_LENGTH 512
 
+
+typedef struct colorStruct{
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+
+} colorStruct;
+
+typedef struct rect{
+    unsigned int xi,yi;
+    unsigned int xf, yf;
+    unsigned char fill;
+    unsigned int border;
+    colorStruct c;
+    
+}rect;
+
+
 typedef struct screen{
 	int xi,yi,xf,yf;
 }screen;

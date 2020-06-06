@@ -5,5 +5,6 @@ void sys_readKeyboard(char * buffer,int count,int * amount);
 void sys_setExceptionHandler(int exception, void * func);
 void sys_scroll(int xi, int yi, int xf, int yf, int px);
 void sys_retrieveReg(void * reg, int * flag);
-void sys_cputemp(double *);
+void sys_cputemp(int *);
 void sys_localtime(char * buffer);
+void sys_drawRect(void * rectangle);
