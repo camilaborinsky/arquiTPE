@@ -24,18 +24,21 @@ tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{resX/2-1
 tabStruct * tabs[]={&tab0,&tab1};
 
 
-colorStruct colorBlack={200,200,200},colorOrange={255,125,0};
+colorStruct colorGrey={200,200,200},colorOrange={255,125,0},colorBlack={0,0,0};
 rect tab0_border;
 rect tab1_border;
+
+rect * tab_borders[]={&tab0_border,&tab1_border};
 registerEnv env;
-int main() {
+
+void setupBorders(){
 	tab0_border.xi = tab0.currentScreen.xi-3;
 	tab0_border.xf = tab0.currentScreen.xf+3;
 	tab0_border.yi = tab0.currentScreen.yi-3;
 	tab0_border.yf = tab0.currentScreen.yf+5;
 	tab0_border.fill=0;
 	tab0_border.border=3;
-	tab0_border.c = colorOrange;
+	tab0_border.c = colorGrey;
 
 	
 
@@ -45,14 +48,40 @@ int main() {
 	tab1_border.yf = tab1.currentScreen.yf+5;
 	tab1_border.fill=0;
 	tab1_border.border=3;
+	tab1_border.c = colorGrey;
+
+	tab_borders[focus]->c = colorOrange;
+	sys_drawRect(&tab1_border);
+	sys_drawRect(&tab0_border);
+}
+
+typedef struct moves{
+	int up, down,left, right;
+}moves;
+
+void superpose(tabStruct * tab1, tabStruct * tab2, moves * m){
+	int width1 = tab1->currentScreen.xf - tab1->currentScreen.xi;
+	int width2 = tab2->currentScreen.xf - tab2->currentScreen.xi;
+	int height1 = tab1->currentScreen.yf - tab1->currentScreen.yi;
+	int height2 = tab2->currentScreen.yf - tab2->currentScreen.yi;
+
+	m->left=0;
+	m->right=0;
+	m->up=0;
+	m->down=0;
+
+	int dx = tab1->currentScreen.xi-tab2->currentScreen.xf;
+	if(dx>0 || -dx>width1+width2 ){
+		m->left=1;
+		m->right=1;
+	}
 	
 
-	// sys_drawBitmap(497,0,linea_vertical_color_xpm);
-	// sys_drawBitmap(0,0,linea_vertical_color_xpm);
-	// sys_drawBitmap(0,0,linea_horizontal_color_xmp);
-	// sys_drawBitmap(0,1000,linea_horizontal_color_xmp);
-	
-	sys_drawRect(&tab0_border);
+}
+
+int main() {
+	setupBorders();
+		
 	int c=0;
 	
 
@@ -66,34 +95,61 @@ int main() {
 	while(1){
 		while((c=getChar()) !='\n'){
 			if(c=='\t'){
+				tab_borders[focus]->c=colorGrey;
+				sys_drawRect(tab_borders[focus]);
 				focus = (focus+1)%NUM_TABS;
-				if(focus ==0){
-					tab1_border.c=colorBlack;
-					sys_drawRect(&tab1_border);
-					tab0_border.c=colorOrange;
-					sys_drawRect(&tab0_border);
-					// sys_drawBitmap((resX/2)-3,0,linea_vertical_color_xpm);
-					// sys_drawBitmap(resX/2,0,linea_vertical_negra_xpm);
-					// sys_drawBitmap(0,0,linea_vertical_color_xpm);
-					// sys_drawBitmap(resX,0,linea_vertical_negra_xpm);
-					// sys_drawBitmap(0,0,linea_horizontal_color_xmp);
-					// sys_drawBitmap(0,resY,linea_horizontal_color_xmp);
-					// sys_drawBitmap(resX/2,0,linea_horizontal_negra_xmp);
-					// sys_drawBitmap((resX/2)-3,resY,linea_horizontal_negra_xmp);
-				}else{//estamos en la pantalla de la derecha
-					tab0_border.c=colorBlack;
-					sys_drawRect(&tab0_border);
-					tab1_border.c=colorOrange;
-					sys_drawRect(&tab1_border);
-					// sys_drawBitmap(497,0,linea_vertical_negra_xpm);
-					// sys_drawBitmap(500,0,linea_vertical_color_xpm);
-					// sys_drawBitmap(0,0,linea_vertical_negra_xpm);
-					// sys_drawBitmap(1000,0,linea_vertical_color_xpm);
-					// sys_drawBitmap(0,0,linea_horizontal_negra_xmp);
-					// sys_drawBitmap(0,1000,linea_horizontal_negra_xmp);
-					// sys_drawBitmap(resX/2,0,linea_horizontal_color_xmp);
-					// sys_drawBitmap((resX/2)-3,1000,linea_horizontal_color_xmp);
+				tab_borders[focus]->c=colorOrange;
+				sys_drawRect(tab_borders[focus]);
+
+			}else if(c>=200 && c<=207){
+				rect eraser ={
+					tabs[focus]->currentScreen.xi,
+					tabs[focus]->currentScreen.yi,
+					tabs[focus]->currentScreen.xf,
+					tabs[focus]->currentScreen.yf,
+					1,
+					0,
+					colorBlack};
+				sys_drawRect(&eraser);
+				tab_borders[focus]->c=colorBlack;
+				sys_drawRect(tab_borders[focus]);
+
+				switch (c){
+					case 200:  // para arriba
+						tabs[focus]->currentScreen.yi-=10;
+						tabs[focus]->currentScreen.yf-=10;
+						break;
+					case 201: // para abajo
+						tabs[focus]->currentScreen.yi+=10;
+						tabs[focus]->currentScreen.yf+=10;
+					break;
+					case 202: // para izquierda
+						tabs[focus]->currentScreen.xi-=10;
+						tabs[focus]->currentScreen.xf-=10;
+					break;
+					case 203: // para derecha
+						tabs[focus]->currentScreen.xi+=10;
+						tabs[focus]->currentScreen.xf+=10;
+					break;
+				case 204:  // agrandar vertical
+					tabs[focus]->currentScreen.yi-=10;
+					break;
+				case 205: //  achicar vertical
+					tabs[focus]->currentScreen.yi+=10;
+					break;
+				case 206: // agrandar horizontal
+					tabs[focus]->currentScreen.xi-=10;
+					break;
+				case 207: // achicar horizontal
+					tabs[focus]->currentScreen.xi+=10;
+					break;
+				
 				}
+				setupBorders();
+				initTabs();
+				
+				sys_drawRect(tab_borders[focus]);
+
 			}else{
 				tabs[focus]->inController(c);
 			}
@@ -124,6 +180,7 @@ void initTabs(){
 		drawString(tabs[i]->out,tabs[i]);
 		tabs[i]->offsetCurrent = tabs[i]->current+1;
 		tabs[i]->inIndex=0;
+
 	}
 }
 

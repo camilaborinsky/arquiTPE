@@ -25,6 +25,27 @@ void keyboard_handler(registerArgs * regs){
 	else if(key==ALT_L || key == CTRL_L){
 		saveReg=1;
 		cpyRegs(&registers,regs); // con ctrl izq
+	}else if(key==224){
+		key=getKey();
+		switch (key){
+			case 80: // abajo
+				key=201;
+				buffer[(i++)%BUFFER_SIZE]=shiftLStatus? key+4 : key;
+				break;
+			case 75: // izq
+				key=202;
+				buffer[(i++)%BUFFER_SIZE]=shiftLStatus? key+4 : key;
+				break;
+			case 72: // arriba
+				key=200;
+				buffer[(i++)%BUFFER_SIZE]=shiftLStatus? key+4 : key;
+				break;
+			case 77: //derecha
+				key=203;
+				buffer[(i++)%BUFFER_SIZE]=shiftLStatus? key+4 : key;
+				break;
+		}
+
 	}else if(key<58)buffer[(i++)%BUFFER_SIZE]= asccode[key][( shiftRStatus | shiftLStatus | blockMayus) - ((shiftLStatus | shiftRStatus) & blockMayus)];
     
 }

@@ -10,8 +10,8 @@ typedef struct colorStruct{
 } colorStruct;
 
 typedef struct rect{
-    unsigned int xi,yi;
-    unsigned int xf, yf;
+    int xi,yi;
+    int xf, yf;
     unsigned char fill;
     unsigned int border;
     colorStruct c;

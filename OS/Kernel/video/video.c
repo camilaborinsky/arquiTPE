@@ -98,7 +98,9 @@ void drawBitmap(int x, int y, char * pixmap[]){ // max 16 colors support
 
 void setPixel(int x, int y, colorStruct c){
     char * framebuffer =(char *)screen_info->framebuffer;
-    int absolute=3*(x+y*screen_info->width);
+    int yCycles = y<0? 768 * ((-y/768)+1):0;
+    int xCycles = x<0? 1024 * ((-x/1024)+1):0;
+    int absolute=3*((x+xCycles)%1024+((y+yCycles)%768)*screen_info->width);
     char * pixel = framebuffer+absolute;
     pixel[0]=c.blue;
     pixel[1]=c.green;
@@ -120,7 +122,7 @@ void drawLine(int xi,int yi,int xf,int yf,colorStruct c){
         return;
     }
     int m = (yf-yi)/(xf-xi);
-    int b = yf - m*xf;
+    int b = yi - m*xi;
     for(int i = xi ; i < xf ; i++){
           setPixel(i,m*i+b,c);  
     }
@@ -130,9 +132,9 @@ void drawRect(rect * rectangle){
     
     if(rectangle->fill){
         for(int j = rectangle->yi;j<rectangle->yf;j++){
-            for(int i=rectangle->xi;i<rectangle-> xf;i++){
-                drawLine(rectangle->xi,rectangle->yi,rectangle->xf,rectangle->yf,rectangle->c);
-            }
+        
+           drawLine(rectangle->xi,j,rectangle->xf,j,rectangle->c);
+            
         }
         return;
     }
