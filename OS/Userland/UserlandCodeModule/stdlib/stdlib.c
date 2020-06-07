@@ -33,7 +33,7 @@ void printf(char * fmt, ...){
                 index+=doubleToString(va_arg(variables,double),buffer+index);
                 break;
             case 's':
-                index += strcpy(va_arg(variables,char *),buffer+index);
+                index += strcpy(buffer+index,va_arg(variables,char *));
             
             default:
                 break;
@@ -41,6 +41,7 @@ void printf(char * fmt, ...){
             fmt++;
         } else buffer[index++]=*fmt++; 
     }
+    buffer[index]=0;
     puts(buffer);
     va_end(variables);
 }

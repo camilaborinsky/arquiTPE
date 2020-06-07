@@ -3,16 +3,16 @@
 #include<stdlib.h>
 
 
+char buffer[32];
+
 void getcpuid(char * out);
 
 void cpuid(int argc,char * args[]){
-    char buffer[32];
     getcpuid(buffer);
     puts(buffer);
 }
 
 void localtime(int argc, char * args[]){
-    char buffer[32];
     sys_localtime(buffer);
     puts(buffer);
 }

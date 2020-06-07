@@ -18,7 +18,7 @@ cpuTemp: ;void cpuTemp(int * res)
 
     shr eax, 16
 
-    mov qword [rdi],0
+    mov dword [rdi],0
     add [rdi],al
     sub [rdi],sil
     

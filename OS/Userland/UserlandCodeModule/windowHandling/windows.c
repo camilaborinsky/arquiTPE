@@ -28,7 +28,7 @@ void flushstdout( tabStruct *tab)
     int px = tab->px;
     int lettersPerLine = width / px; //cambiar a syscall getResolution
     int totalLines = height/(2*px);
-    for (index; out[index%SIZE] != 0; index++){
+    for (; out[index%SIZE] != 0; index++){
         if (out[index%SIZE] == 8){
             if(tab->current >= tab->offsetCurrent){
                 out[index%SIZE] = 32;

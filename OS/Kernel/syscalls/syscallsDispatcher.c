@@ -24,7 +24,7 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
             drawBitmap(registers[0], registers[1],(void *) registers[2]);
             break;
         case 3:
-            cpuTemp((void *)registers[0]);
+            cpuTemp((int *)registers[0]);
             break;
         case 4:
             readErrors((errorStruct *)registers[0]);

@@ -10,6 +10,5 @@ void printmem(int argc, char * args[]){
     char buffer[4];
     for(int i=0; i<32; i++){
         printf("%h ",pointer[i]);
-        intToHex(pointer[i],buffer);
     }
 }

@@ -23,8 +23,8 @@ void exGenericHandler(errorStruct * error);
 void initTabs();
 void initTab(tabStruct * tab);
 
-tabStruct tab0 = {"calc@covinux:>",evaluator,inControllerTab0,exGenericHandler,{0},0,10,{10,10,resX/2-10,resY/2-10},0,0};
-tabStruct tab1 = {"shell@covinux:>",shell,inControllerTab1,exGenericHandler,{0},0,10,{resX/2-10,resY/2-10,resX-10,resY-10},0,0};
+tabStruct tab0 = {"calc@covinux:>",evaluator,inControllerTab0,exGenericHandler,{0},0,10,{10,200,500,600},0,0};
+tabStruct tab1 = {"shell@covinux:>",shell,inControllerTab1,exGenericHandler,{0},0,10,{524,200,1014,600},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -63,16 +63,16 @@ typedef struct moves{
 	int up, down,left, right;
 }moves;
 
+void drawPixMaps(){
+	sys_drawBitmap(0,0,itbaLogo_xpm);
+	sys_drawBitmap(700,76,shellLogo_xpm);
+	sys_drawBitmap(200,76,calcLogo_xpm);
+}
+
 int main() {
 	createstdout();
-	sys_drawBitmap(600,0,itbaLogo_xpm);
-	flushstdout(&tab0);
 	setupBorders();
-	sys_drawBitmap(600,0,itbaLogo_xpm);
-	sys_drawBitmap(600,67,shellLogo_xpm);
-	sys_drawBitmap(600,167,calcLogo_xpm);
-
-
+	drawPixMaps();
 	createstdout();
 			
 	int c=0;
@@ -98,7 +98,7 @@ int main() {
 				eraseTab(tabs[focus]);
 				initTab(tabs[focus]);			
 			}else if(c>=200 && c<=207){
-				sys_drawBitmap(600,0,itbaLogo_xpm);
+				drawPixMaps();
 				eraseTab(tabs[focus]);
 				tab_borders[focus]->c=colorBlack;
 				sys_drawRect(tab_borders[focus]);
@@ -243,7 +243,7 @@ void exGenericHandler(errorStruct * error){
     puts("\n registros \n");
     
     for(int i = 0 ; i < 19 ; i++){
-		printf("%s    %h \n",registersNames,registers[i]);
+		printf("%s    %h \n",registersNames[i],registers[i]);
     
     }	
 	puts(tabs[focus]->name);
