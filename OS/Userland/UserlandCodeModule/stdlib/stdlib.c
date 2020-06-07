@@ -1,6 +1,57 @@
 #include<stdint.h>
 #include<syscalls.h>
+#include<stdarg.h>
 #include<stdlib.h>
+
+
+int strlen(char * buffer){
+    int i=0;
+    while(*buffer!=0){
+        buffer++;
+        i++;
+    }   
+    return i;
+}
+
+void printf(char * fmt, ...){
+    va_list variables;
+
+    va_start(variables, fmt);
+    char buffer[512];
+    unsigned int index=0;
+    while(*fmt != 0){
+        if(*fmt == '%'){
+            fmt++;
+            switch (*fmt){
+            case 'd':
+                index+=intToString(va_arg(variables,int),buffer+index);
+                break;
+            case 'h':
+                index+=intToHex(va_arg(variables,int),buffer+index);
+                break;
+            case 'f':
+                index+=doubleToString(va_arg(variables,double),buffer+index);
+                break;
+            case 's':
+                index += strcpy(va_arg(variables,char *),buffer+index);
+            
+            default:
+                break;
+            }
+            fmt++;
+        } else buffer[index++]=*fmt++; 
+    }
+    puts(buffer);
+    va_end(variables);
+}
+
+void puts(char * buffer){
+    sys_write(buffer,strlen(buffer));
+}
+
+void putchar(unsigned char c){
+    sys_write(&c,1);
+}
 
 int intToBase(int num, int base, char*buffer);
 

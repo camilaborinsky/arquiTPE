@@ -6,6 +6,10 @@
 
 void printNum(uint64_t num);
 void hlt();
+void putchar(unsigned char);
+int strlen(char * string);
+void printf(char * fmt, ...);
+void puts(char * buffer);
 int getChar();
 uint64_t atoi(char *);
 void deleteChar(char * str, char c);

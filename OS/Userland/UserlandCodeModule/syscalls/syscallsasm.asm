@@ -8,6 +8,8 @@ GLOBAL sys_retrieveReg
 GLOBAL sys_cputemp
 GLOBAL sys_localtime
 GLOBAL sys_drawRect
+GLOBAL sys_mapstdout
+GLOBAL sys_write
 
 sys_readKeyboard:  ;char* buffer, int count,int * amount
 	push rbp
@@ -97,6 +99,23 @@ sys_drawRect:  ;rect * rectangle
 	push rbp
 	mov rbp,rsp
 	mov rax, 9
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
+
+sys_mapstdout:  ;void * buffer
+	push rbp
+	mov rbp,rsp
+	mov rax, 10
+	int 80h
+	mov rsp, rbp
+	pop rbp
+	ret
+sys_write:  ;void * buffer, int count
+	push rbp
+	mov rbp,rsp
+	mov rax, 11
 	int 80h
 	mov rsp, rbp
 	pop rbp

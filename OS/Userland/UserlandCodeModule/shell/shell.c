@@ -5,23 +5,22 @@
 #include "printmem.h"
 #include "inforeg.h"
 #include "sysInfo.h"
-#include "clear.h"
 
 char * messages[] = {"Command not found"};
-char * commands[] = {"help","inforeg","printmem","cputemp", "cpuid", "localtime", "divisionbyzero", "invalidopcode", "clear", 0};
-void  (* run[])(char *,int,char * * ) = {help, inforeg, printmem, cputemp,cpuid, localtime, divisionbyzero, invalidopcode, clear};
+char * commands[] = {"help","inforeg","printmem","cputemp", "cpuid", "localtime", "divisionbyzero", "invalidopcode", 0};
+void  (* run[])(int,char * * ) = {help, inforeg, printmem, cputemp,cpuid, localtime, divisionbyzero, invalidopcode};
 
-void shell(char * in, char * out){
+void shell(char * in){
     char * args[ARGS_LENGTH];
     int argc = processInput(in,args);
     // strcpy(out, args[1]);
     // return;
     int command = checkCommand(args[0]);
     if(command == -1){
-        strcpy(out, messages[0]);
+        puts(messages[0]);
     }
     else
-        run[command](out,argc-1,args+1);
+        run[command](argc-1,args+1);
 }
 
 int processInput(char * in, char ** args){

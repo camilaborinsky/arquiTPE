@@ -1,7 +1,7 @@
 #include "help.h"
 #include <stdlib.h>
-void help(char * out, int argc, char * args[]){
-    strcpy(out,
+void help(int argc, char * args[]){
+   puts(
         "available commands: \n"
         "    help \n"
         "    inforeg \n"

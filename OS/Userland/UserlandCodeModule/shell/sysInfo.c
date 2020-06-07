@@ -2,16 +2,23 @@
 #include "sysInfo.h"
 #include<stdlib.h>
 
-void localtime(char * out, int argc, char * args[]){
-    sys_localtime(out);
+
+void getcpuid(char * out);
+
+void cpuid(int argc,char * args[]){
+    char buffer[32];
+    getcpuid(buffer);
+    puts(buffer);
 }
 
-void cputemp(char * out, int argc, char * args[]){
+void localtime(int argc, char * args[]){
+    char buffer[32];
+    sys_localtime(buffer);
+    puts(buffer);
+}
+
+void cputemp( int argc, char * args[]){
     int res=0;
     sys_cputemp(&res);
-    int c = intToString(res, out);
-    out[c++]=' ';
-    out[c++]='*';
-    out[c++]='C';
-    out[c]=0; 
+    printf("%d *C",res);
 }

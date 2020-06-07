@@ -15,7 +15,7 @@ typedef struct token
 } token;
 int doubleToString(double value, char * buffer);
 double stringToDouble(char * init, char * end);
-void evaluator(char * in, char * out);
+void evaluator(char * in);
 char infixToPosfix(token * infix, token * posfix);
 char getPrecedence(char first, char second);
 char tokenizer(char * in, token * out);

@@ -1,17 +1,15 @@
 #include<stdlib.h>
 
 
-void printmem(char * out, int argc, char * args[]){
+void printmem(int argc, char * args[]){
     if(argc != 1){
-        strcpy(out, "cantidad de argumentos invalida");
+        puts("cantidad de argumentos invalida");
         return;
     }
     unsigned char * pointer =(unsigned char *)atoi(args[0]);
     char buffer[4];
     for(int i=0; i<32; i++){
+        printf("%h ",pointer[i]);
         intToHex(pointer[i],buffer);
-        out += strcpy(out,buffer);
-        *out++=' ';
     }
-    *out=0;
 }

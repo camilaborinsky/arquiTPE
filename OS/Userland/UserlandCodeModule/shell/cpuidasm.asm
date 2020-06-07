@@ -1,6 +1,6 @@
-GLOBAL cpuid
+GLOBAL getcpuid
 
-cpuid: ;void cpuid(char * out, int argc,char * args[]);
+getcpuid: ;void cpuid(char * out);
     push rbp
     mov rbp,rsp
     push rbx

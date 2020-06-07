@@ -23,11 +23,10 @@ void exGenericHandler(errorStruct * error);
 void initTabs();
 void initTab(tabStruct * tab);
 
-tabStruct tab0 = {evaluator,inControllerTab0,exGenericHandler,{0},{0},0,10,{10,10,resX/2-10,resY/2-10},0,0};
-tabStruct tab1 = {shell,inControllerTab1,exGenericHandler,{0},{0},0,10,{resX/2-10,resY/2-10,resX-10,resY-10},0,0};
+tabStruct tab0 = {"calc@covinux:>",evaluator,inControllerTab0,exGenericHandler,{0},0,10,{10,10,resX/2-10,resY/2-10},0,0};
+tabStruct tab1 = {"shell@covinux:>",shell,inControllerTab1,exGenericHandler,{0},0,10,{resX/2-10,resY/2-10,resX-10,resY-10},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
-
 
 colorStruct colorGrey={200,200,200},colorOrange={255,125,0},colorBlack={0,0,0};
 rect tab0_border;
@@ -65,10 +64,16 @@ typedef struct moves{
 }moves;
 
 int main() {
+	createstdout();
+	sys_drawBitmap(600,0,itbaLogo_xpm);
+	flushstdout(&tab0);
 	setupBorders();
 	sys_drawBitmap(600,0,itbaLogo_xpm);
 	sys_drawBitmap(600,67,shellLogo_xpm);
 	sys_drawBitmap(600,167,calcLogo_xpm);
+
+
+	createstdout();
 			
 	int c=0;
 	
@@ -142,14 +147,12 @@ int main() {
 		}
 
 		tabStruct * currentTab = tabs[focus];
-		//drawString("\n input:",currentTab);
-		//drawString(currentTab->in,currentTab);
-		drawString("\n",currentTab);
-		currentTab->run(currentTab->in,currentTab->out);
-		drawString(currentTab->out,currentTab);
-		drawString("\n",currentTab);
-		strcpy(currentTab->out,"usr@coronavinux:>");
-		drawString(currentTab->out,currentTab);
+
+		putchar('\n');
+		currentTab->run(currentTab->in);
+		putchar('\n');
+		puts(tabs[focus]->name);
+		flushstdout(currentTab);
 		currentTab->offsetCurrent = currentTab->current+1;
 		currentTab->inIndex=0;
 		currentTab->in[0]=0;
@@ -168,8 +171,8 @@ void initTabs(){
 void initTab(tabStruct * tab){
 	//que arranquen las pantallas con username escrito
 	tab->current=0;
-	strcpy(tab->out+tab->current,"usr@coronavinux:>");
-	drawString(tab->out,tab);
+	puts(tab->name);
+	flushstdout(tab);
 	tab->offsetCurrent = tab->current+1;
 	tab->inIndex=0;
 
@@ -201,9 +204,8 @@ void genericInController(int c, tabStruct * tab){
 			tab->in[tab->inIndex]=0;
 		}
 
-		tab->out[0]=c;
-		tab->out[1]=0;
-		if(c!=0)drawString(tab->out,tab);	
+		putchar(c);
+		if(c!=0)flushstdout(tab);	
 	}
 }
 
@@ -225,11 +227,11 @@ void exGenericHandler(errorStruct * error){
 	switch (error->errorCode)
 	{
 	case 0:
-		drawString("Excepcion de division por cero \n",tabs[focus]);
+		puts("Excepcion de division por cero \n");
 		break;
 	
 	case 6:
-		drawString("Excepcion de codigo de operacion invalido \n",tabs[focus]);
+		puts("Excepcion de codigo de operacion invalido \n");
 		break;
 	}
 	//inforeg(error->registers);
@@ -237,20 +239,15 @@ void exGenericHandler(errorStruct * error){
 	char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","rdi",\
                             "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
 	uint64_t * registers =(uint64_t *)&(error->registers);
-	drawString("\n",tabs[focus]);
 	int index=0;
-    index=strcpy(tabs[focus]->out, "registros \n");
+    puts("\n registros \n");
     
     for(int i = 0 ; i < 19 ; i++){
-
-        index+=strcpy(tabs[focus]->out+index, registersNames[i]);
-        index+=strcpy(tabs[focus]->out+index,"    ");
-        index+=intToHex(registers[i], tabs[focus]->out+index);
-        index+=strcpy(tabs[focus]->out+index,"\n");
+		printf("%s    %h \n",registersNames,registers[i]);
     
     }	
-	strcpy(tabs[focus]->out+index,"usr@coronavinux:>");
-	drawString(tabs[focus]->out,tabs[focus]);
+	puts(tabs[focus]->name);
+	flushstdout(tabs[focus]);
 	tabs[focus]->offsetCurrent = tabs[focus]->current+1;
 	tabs[focus]->inIndex=0;
 	longjmp(&env,error->errorCode+1);

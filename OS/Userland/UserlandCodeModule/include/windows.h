@@ -29,11 +29,11 @@ typedef struct screen{
 }screen;
 
 typedef struct tabStruct{
-	void  (* run)(char *, char *);
+	char * name;
+	void  (* run)(char *);
 	void (* inController) (int);
 	void (* exceptionsHandler)(errorStruct *);
 	char in[IN_LENGTH];
-	char out[OUT_LENGTH];
 	int inIndex;
 	int px;
 	screen currentScreen;
@@ -41,8 +41,8 @@ typedef struct tabStruct{
 	int current;
 }tabStruct;
 
-
-void drawString(char *, tabStruct * );
+void createstdout();
+void flushstdout(tabStruct * );
 void eraseTab(tabStruct * );
 int strcpyTab(char * src, char * dest, tabStruct * tab);
 

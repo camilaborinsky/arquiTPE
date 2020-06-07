@@ -8,3 +8,5 @@ void sys_retrieveReg(void * reg, int * flag);
 void sys_cputemp(int *);
 void sys_localtime(char * buffer);
 void sys_drawRect(void * rectangle);
+void sys_mapstdout(void * buffer,int size);
+void sys_write(void * buffer, int count);

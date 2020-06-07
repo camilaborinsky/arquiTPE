@@ -3,6 +3,7 @@
 #include<keyboard.h>
 #include<systemInfo.h>
 #include<exceptions.h>
+#include<files.h>
 //void syscallsDispatcher(uint64_t id, uint64_t rdi, uint64_t rsi, ... ):
 
 //void write(unsigned int fd, const char * buf, uint64_t count);
@@ -43,7 +44,12 @@ void syscallsDispatcher (uint64_t id, uint64_t * registers){
         case 9:
             drawRect((void *)registers[0]);
             break;
-        
+        case 10:
+            mapstdout((void *)registers[0],registers[1]);
+            break;
+        case 11:
+            write((void *)registers[0],registers[1]);
+            break;
     }
 
 }

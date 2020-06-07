@@ -5,6 +5,6 @@
 
 int processInput(char * in, char ** args);
 int checkCommand(char * command);
-void shell(char * in, char * out);
+void shell(char * in);
 
 #endif

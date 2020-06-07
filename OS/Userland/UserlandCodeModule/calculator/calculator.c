@@ -30,27 +30,27 @@ char * error_msg[]={"Error de formato en la expresion: 2 signos de puntuacion en
 };
 
 
-void evaluator(char *in, char * out){
+void evaluator(char *in){
     token toks[100];
     token posfix[100];
     double result = 0;
 
     char error = tokenizer(in, toks);
     if(error != OK){
-        strcpy(out, error_msg[error-1]);
+        puts(error_msg[error-1]);
         return;
     }
     error = infixToPosfix(toks, posfix);
     if(error != OK){
-        strcpy(out, error_msg[error-1]);
+       puts(error_msg[error-1]);
         return;
     }
     error = posfixEvaluator(posfix, &result);
     if(error != OK){
-        strcpy(out, error_msg[error-1]);
+        puts(error_msg[error-1]);
         return;
     }
-    doubleToString(result,out);
+    printf("%f",result);
 }
 
 char posfixEvaluator(token *expression, double *result){

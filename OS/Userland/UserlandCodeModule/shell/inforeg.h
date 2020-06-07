@@ -27,6 +27,6 @@ typedef struct registerArgs{
 	uint64_t flags;
 }registerArgs;
 
-void inforeg(char * out, int argc, char *  args[]);
+void inforeg(int argc, char *  args[]);
 
 #endif
