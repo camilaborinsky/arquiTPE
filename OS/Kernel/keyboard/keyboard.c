@@ -13,7 +13,7 @@ static int base=0;
 char shiftLStatus=0;
 char shiftRStatus=0;
 char blockMayus=0;
-
+char (* layout)[2]=asccode;
 
 void keyboard_handler(registerArgs * regs){
     unsigned char key = getKey();
@@ -27,6 +27,10 @@ void keyboard_handler(registerArgs * regs){
 		cpyRegs(&registers,regs); // con ctrl izq
 	}else if(key == 59){ //F1
 		buffer[(i++)%BUFFER_SIZE]=208;
+	}else if(key == 60){ //F2
+		layout=asccode;
+	}else if(key == 61){ //F3
+		layout=spanish_asccode;
 	}else if(key==224){
 		key=getKey();
 		switch (key){
@@ -48,7 +52,7 @@ void keyboard_handler(registerArgs * regs){
 				break;
 		}
 
-	}else if(key<58)buffer[(i++)%BUFFER_SIZE]= asccode[key][( shiftRStatus | shiftLStatus | blockMayus) - ((shiftLStatus | shiftRStatus) & blockMayus)];
+	}else if(key<58)buffer[(i++)%BUFFER_SIZE]= layout[key][( shiftRStatus | shiftLStatus | blockMayus) - ((shiftLStatus | shiftRStatus) & blockMayus)];
     
 }
 
