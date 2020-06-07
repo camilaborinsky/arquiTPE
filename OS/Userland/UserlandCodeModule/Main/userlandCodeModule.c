@@ -1,7 +1,6 @@
 #include <syscalls.h>
 #include <stdint.h>
 #include <setJmp.h>
-#include "pixMaps.h"
 #include <windows.h>
 #include <errors.h>
 #include <stdlib.h>
@@ -9,6 +8,8 @@
 #include <calculator.h>
 #include <shell.h>
 #include "itbaLogo.xpm"
+#include "shellLogo.xpm"
+#include "calcLogo.xpm"
 
 #define RADIUS 1
 unsigned char focus = 0;
@@ -63,29 +64,11 @@ typedef struct moves{
 	int up, down,left, right;
 }moves;
 
-void superpose(tabStruct * tab1, tabStruct * tab2, moves * m){
-	int width1 = tab1->currentScreen.xf - tab1->currentScreen.xi;
-	int width2 = tab2->currentScreen.xf - tab2->currentScreen.xi;
-	int height1 = tab1->currentScreen.yf - tab1->currentScreen.yi;
-	int height2 = tab2->currentScreen.yf - tab2->currentScreen.yi;
-
-	m->left=0;
-	m->right=0;
-	m->up=0;
-	m->down=0;
-
-	int dx = tab1->currentScreen.xi-tab2->currentScreen.xf;
-	if(dx>0 || -dx>width1+width2 ){
-		m->left=1;
-		m->right=1;
-	}
-	
-
-}
-
 int main() {
 	setupBorders();
 	sys_drawBitmap(600,0,itbaLogo_xpm);
+	sys_drawBitmap(600,67,shellLogo_xpm);
+	sys_drawBitmap(600,167,calcLogo_xpm);
 			
 	int c=0;
 	

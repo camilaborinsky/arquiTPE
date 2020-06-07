@@ -75,10 +75,11 @@ void scroll(int xi, int yi, int xf, int yf, int px){
 void drawCharacter(int x, int y, int px, char letter){
     colorStruct white = {255,255,255};
     colorStruct black = {0,0,0};
+    colorStruct green = {0,200,0};
     double scale=1.0f*px/letter_width;
     for(int j = 0; j < letter_height*scale;j++){
         for(int i = 0; i < letter_width*scale;i++){
-            setPixel(i+x,j+y,getBit(letter,i/scale,j/scale)?white:black);
+            setPixel(i+x,j+y,getBit(letter,i/scale,j/scale)?green:black);
         }
 	}   
 }
