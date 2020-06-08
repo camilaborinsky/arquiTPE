@@ -22,19 +22,20 @@ void createstdout(){
 }
 
 void flushstdout( tabStruct *tab)
-{   
+{  
     int height = tab->currentScreen.yf - tab->currentScreen.yi;
     int width = tab->currentScreen.xf - tab->currentScreen.xi;
     int px = tab->px;
     int lettersPerLine = width / px; //cambiar a syscall getResolution
-    int totalLines = height/(2*px);
+    int lineHeight = 2*px +2;
+    int totalLines = height/(lineHeight);
     for (; out[index%SIZE] != 0; index++){
         if (out[index%SIZE] == 8){
             if(tab->current >= tab->offsetCurrent){
                 out[index%SIZE] = 32;
                 tab->current--;
                 int x_offset = tab->currentScreen.xi + px * ((tab->current) % lettersPerLine);
-                int y_offset = tab->currentScreen.yi + (2 * px) * ((tab->current) / lettersPerLine);
+                int y_offset = tab->currentScreen.yi + (lineHeight) * ((tab->current) / lettersPerLine);
                 sys_drawCharacter(x_offset, y_offset, px, out[index%SIZE]);
             }
         } else {
@@ -44,15 +45,16 @@ void flushstdout( tabStruct *tab)
             }
             else{
                 int x_offset = tab->currentScreen.xi + px * ((tab->current) % lettersPerLine);
-                int y_offset = tab->currentScreen.yi + (2 * px) * ((tab->current)/ lettersPerLine);
+                int y_offset = tab->currentScreen.yi + (lineHeight) * ((tab->current)/ lettersPerLine);
                 sys_drawCharacter(x_offset, y_offset, px, out[index%SIZE]);
                 tab->current++;
             }
             if((tab->current) / lettersPerLine>=(totalLines-1)){
                 sys_scroll(tab->currentScreen.xi, tab->currentScreen.yi, \
                             tab->currentScreen.xf, tab->currentScreen.yf, \
-                            2 * px);
+                            lineHeight);
                 tab->current-=lettersPerLine;
+                tab->offsetCurrent-=lettersPerLine;
             }
         }
     }
