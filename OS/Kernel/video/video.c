@@ -1,5 +1,6 @@
 #include <stdint.h>
-#include "fonts.h"
+#include "inconsolata.h"
+#include "retron.h"
 #include "xPixMap.h"
 #include <video.h>
 
@@ -43,7 +44,12 @@ struct vbe_mode_info_structure{
 
 void setPixel(int x, int y, colorStruct c);
 char getBit(unsigned char index,int x, int y);
+char * * font = inconsolata;
 
+void changeFont(int i){
+    if(i==0) font=retron;
+    else font=inconsolata;
+}
 struct vbe_mode_info_structure * screen_info = (struct vbe_mode_info_structure * )0x5C00;
 
 void segmentRowCopy(int dest, int src, int start, int end){
@@ -113,7 +119,7 @@ char getBit(unsigned char index,int x, int y){
   	int absolute = x + y * letter_bytes*8;
   	int pos = absolute/8;
   	int bit = absolute%8;
-  	return (bitmap[index-OFFSET][pos]>>(bit))&0x01;	
+  	return (font[index-OFFSET][pos]>>(bit))&0x01;	
 }
 void drawLine(int xi,int yi,int xf,int yf,colorStruct c){
     if(xi==xf){

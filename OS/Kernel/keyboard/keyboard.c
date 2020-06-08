@@ -31,6 +31,10 @@ void keyboard_handler(registerArgs * regs){
 		layout=asccode;
 	}else if(key == 61){ //F3
 		layout=spanish_asccode;
+	}else if(key == 62){ //F4
+		changeFont(0);
+	}else if(key == 63){ //F5
+		changeFont(1);
 	}else if(key==224){
 		key=getKey();
 		switch (key){

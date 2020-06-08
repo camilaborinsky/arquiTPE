@@ -22,4 +22,5 @@ void drawCharacter(int x, int y, int px, char letter);
 void drawBitmap(int x, int y, char * bitmap[]);
 void drawRect(rect * rectangle);
 void scroll(int xi, int yi, int xf, int yf, int px);
+void changeFont(int i);
 #endif
