@@ -2,7 +2,7 @@
 #include<syscalls.h>
 #include<stdarg.h>
 #include<stdlib.h>
-
+#include<windows.h>
 
 int strlen(char * buffer){
     int i=0;
@@ -54,7 +54,7 @@ void putchar(unsigned char c){
     sys_write(&c,1);
 }
 
-int intToBase(int num, int base, char*buffer);
+int intToBase(unsigned long long num, int base, char*buffer);
 
 uint64_t atoi(char * string){
     uint64_t num=0;
@@ -90,22 +90,26 @@ double stringToDouble(char *init, char *end){
     return res;
 }
 
-
+extern tabStruct tab0;
 int doubleToString(double value, char * buffer){
-	long long precision=10000;
-    int c=0;
+	unsigned long long precision=10000;
+    unsigned int c=0;
     if(value<0){
         value=-value;
         buffer[c++]='-';
     }
-	long long m=value;
-    if(m<0) m=-m;
+	unsigned long long m=value;
 	double p = value-m;
-	long long r=(long long)(p*precision+0.00001f);
-    if(r<0)r=-r;
+	unsigned long long r=(p*precision+0.00001f);
+    if(m+1<value || m+p!=value || r>precision){
+        buffer[c++]='.';
+        buffer[c++]='-';
+        buffer[c++]='1';
+        return c;
+    }
 	c += intToString(m,buffer+c);
 	buffer[c++]='.';
-	long long aux=r;
+	unsigned long long  aux=r%precision;
 	while(r!=0 && 10*aux/precision<1){
 		buffer[c++]='0';
 		aux*=10;
@@ -116,11 +120,11 @@ int doubleToString(double value, char * buffer){
 }
 
 
-int intToHex(int num, char * buffer){
+int intToHex(unsigned long long num, char * buffer){
     return intToBase(num,16,buffer);
 }
 
-int intToBase(int num, int base, char*buffer){
+int intToBase(unsigned long long num, int base, char*buffer){
     char stack[11];
     int c = 0;
     int i=0;
@@ -186,7 +190,7 @@ int getChar(){
     return count<0?-1:(int)character;
 }
 
-int intToString(int num, char * buffer)
+int intToString(unsigned long long num, char * buffer)
 {
     return intToBase(num,10,buffer);
 }

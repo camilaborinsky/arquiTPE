@@ -73,7 +73,6 @@ int main() {
 	createstdout();
 	setupBorders();
 	drawPixMaps();
-	createstdout();
 			
 	int c=0;
 	
