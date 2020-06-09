@@ -15,7 +15,7 @@
 unsigned char focus = 0;
 #define resX  1024
 #define resY  768
-#define BORDER 3
+#define BORDER 10
 #define MOVE 50
 #define SCALE 30
 
@@ -36,20 +36,20 @@ rect * tab_borders[]={&tab0_border,&tab1_border};
 registerEnv env;
 
 void setupBorders(){
-	tab0_border.xi = tab0.currentScreen.xi-3;
-	tab0_border.xf = tab0.currentScreen.xf+3;
-	tab0_border.yi = tab0.currentScreen.yi-3;
-	tab0_border.yf = tab0.currentScreen.yf+5;
+	tab0_border.xi = tab0.currentScreen.xi-BORDER;
+	tab0_border.xf = tab0.currentScreen.xf+BORDER;
+	tab0_border.yi = tab0.currentScreen.yi-BORDER;
+	tab0_border.yf = tab0.currentScreen.yf+BORDER;
 	tab0_border.fill=0;
 	tab0_border.border=3;
 	tab0_border.c = colorGrey;
 
 	
 
-	tab1_border.xi = tab1.currentScreen.xi-3;
-	tab1_border.xf = tab1.currentScreen.xf+3;
-	tab1_border.yi = tab1.currentScreen.yi-3;
-	tab1_border.yf = tab1.currentScreen.yf+5;
+	tab1_border.xi = tab1.currentScreen.xi-BORDER;
+	tab1_border.xf = tab1.currentScreen.xf+BORDER;
+	tab1_border.yi = tab1.currentScreen.yi-BORDER;
+	tab1_border.yf = tab1.currentScreen.yf+BORDER;
 	tab1_border.fill=0;
 	tab1_border.border=3;
 	tab1_border.c = colorGrey;
@@ -233,13 +233,12 @@ void exGenericHandler(errorStruct * error){
 		puts("Excepcion de codigo de operacion invalido \n");
 		break;
 	}
-	//inforeg(error->registers);
 
 	char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","rdi",\
                             "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
 	uint64_t * registers =(uint64_t *)&(error->registers);
 	int index=0;
-    puts("\n registros \n");
+    puts("registros \n");
     
     for(int i = 0 ; i < 19 ; i++){
 		printf("%s    %h \n",registersNames[i],registers[i]);
