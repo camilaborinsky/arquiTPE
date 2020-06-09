@@ -90,30 +90,27 @@ double stringToDouble(char *init, char *end){
     return res;
 }
 
+
 int doubleToString(double value, char * buffer){
-	int precision=1000000000;
+	long long precision=10000;
     int c=0;
     if(value<0){
         value=-value;
         buffer[c++]='-';
     }
-	long m=value;
+	long long m=value;
     if(m<0) m=-m;
 	double p = value-m;
-	long r=(int)(p*precision+0.00001f);
+	long long r=(long long)(p*precision+0.00001f);
     if(r<0)r=-r;
 	c += intToString(m,buffer+c);
 	buffer[c++]='.';
-	int aux=r;
+	long long aux=r;
 	while(r!=0 && 10*aux/precision<1){
 		buffer[c++]='0';
 		aux*=10;
 	}
-	
-	
-	
-	
-	intToString(r,buffer+c++);
+	c+=intToString(r,buffer + c);
     buffer[c]=0;
     return c;
 }

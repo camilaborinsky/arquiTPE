@@ -24,7 +24,7 @@ void initTabs();
 void initTab(tabStruct * tab);
 
 tabStruct tab0 = {"calc@covinux:>",evaluator,inControllerTab0,exGenericHandler,{0},0,10,{10,200,500,600},0,0};
-tabStruct tab1 = {"shell@covinux:>",shell,inControllerTab1,exGenericHandler,{0},0,10,{524,200,1014,600},0,0};
+tabStruct tab1 = {"shell@covinux:>",shell,inControllerTab1,exGenericHandler,{0},0,10,{524,200,1014,750},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
 
@@ -216,7 +216,7 @@ void inControllerTab1(int c){
 
 void inControllerTab0(int c){
 
-	if((c>='0' && c<='9') || c=='+' || c=='-' || c=='/' || c=='*' || c=='(' || c==')'|| c==8 || c==128)
+	if((c>='0' && c<='9') || c=='.' || c==',' || c=='+' || c=='-' || c=='/' || c=='*' || c=='(' || c==')'|| c==8 || c==128)
 		genericInController(c,&tab0);
 	
 }
