@@ -23,7 +23,7 @@ void exGenericHandler(errorStruct * error);
 void initTabs();
 void initTab(tabStruct * tab);
 
-tabStruct tab0 = {"calc@covinux:>",evaluator,inControllerTab0,exGenericHandler,{0},0,10,{10,200,500,600},0,0};
+tabStruct tab0 = {"calc@covinux:>",evaluator,inControllerTab0,exGenericHandler,{0},0,10,{10,200,500,750},0,0};
 tabStruct tab1 = {"shell@covinux:>",shell,inControllerTab1,exGenericHandler,{0},0,10,{524,200,1014,750},0,0};
 
 tabStruct * tabs[]={&tab0,&tab1};
@@ -237,7 +237,6 @@ void exGenericHandler(errorStruct * error){
 	char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","rdi",\
                             "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
 	uint64_t * registers =(uint64_t *)&(error->registers);
-	int index=0;
     puts("registros \n");
     
     for(int i = 0 ; i < 19 ; i++){

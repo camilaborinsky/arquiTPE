@@ -7,7 +7,6 @@ char * registersNames[] = {"r15","r14","r13","r12","r11","r10","r9","r8","rsi","
                             "rbp","rdx","rcx","rbx","rax","rsp","rip","cs","flags"};
 
 void inforeg( int argc, char * args[]){
-    char buffer[100];
     int flag;
     registerArgs reg;
     sys_retrieveReg(&reg, &flag);
