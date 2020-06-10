@@ -109,12 +109,14 @@ int doubleToString(double value, char * buffer){
     }
 	c += intToString(m,buffer+c);
 	buffer[c++]='.';
+    int digits=c;
 	unsigned long long  aux=r%precision;
 	while(r!=0 && 10*aux/precision<1){
 		buffer[c++]='0';
 		aux*=10;
 	}
 	c+=intToString(r,buffer + c);
+    while(c-digits<4)buffer[c++]='0';
     buffer[c]=0;
     return c;
 }
